@@ -1,0 +1,1795 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>onlylap PRO — Laptop Qidiruv Tizimi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --accent:#2563eb;--green:#059669;--red:#ef4444;
+  --bg:#f4f6f9;--surf:#ffffff;--surf2:#f8f9fc;
+  --border:#e2e5ec;--txt:#111827;--muted:#6b7280;
+  --nav-bg:rgba(255,255,255,.96);
+}
+.dark{
+  --bg:#09090f;--surf:#111118;--surf2:#181820;
+  --border:#252535;--txt:#f0f0f5;--muted:#8888aa;
+  --nav-bg:rgba(9,9,15,.96);
+}
+body{font-family:'DM Sans','Segoe UI',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh;transition:background .3s,color .3s;font-size:14px}
+a{text-decoration:none;color:inherit}
+button{font-family:inherit;cursor:pointer;border:none}
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:99px}
+input[type=range]{-webkit-appearance:none;width:100%;height:4px;border-radius:4px;background:var(--border);cursor:pointer;outline:none}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;background:var(--accent);cursor:pointer;box-shadow:0 0 0 3px #2563eb33}
+
+/* ── NAV ─────────────────────── */
+#nav{position:sticky;top:0;z-index:200;background:var(--nav-bg);border-bottom:1px solid var(--border);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}
+.nav-inner{max-width:1440px;margin:0 auto;padding:0 20px;height:58px;display:flex;align-items:center;gap:12px}
+.logo{display:flex;align-items:center;gap:9px;flex-shrink:0}
+.logo-icon{width:32px;height:32px;border-radius:9px;background:linear-gradient(135deg,#2563eb,#059669);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900;font-size:12px}
+.logo-text{font-weight:900;font-size:17px;letter-spacing:-0.5px}
+.logo-text b{color:var(--accent)}
+.logo-badge{font-size:10px;font-weight:700;color:var(--muted);background:var(--surf2);border:1px solid var(--border);border-radius:4px;padding:1px 5px;margin-left:6px}
+.nav-right{margin-left:auto;display:flex;align-items:center;gap:12px}
+.nav-info{font-size:12px;color:var(--muted)}
+.dark-btn{width:32px;height:32px;border-radius:9px;border:1px solid var(--border)!important;background:var(--surf2);display:flex;align-items:center;justify-content:center;font-size:15px;transition:.2s}
+
+/* ── LAYOUT ──────────────────── */
+.layout{max-width:1440px;margin:0 auto;padding:20px 16px;display:grid;grid-template-columns:320px 1fr;gap:20px;align-items:start}
+@media(max-width:980px){.layout{grid-template-columns:1fr}}
+
+/* ── SIDEBAR ─────────────────── */
+#sidebar{position:sticky;top:70px;background:var(--surf);border:1px solid var(--border);border-radius:18px;overflow:hidden;box-shadow:0 2px 16px rgba(0,0,0,.05)}
+.dark #sidebar{box-shadow:0 4px 24px rgba(0,0,0,.4)}
+.sb-head{padding:13px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.sb-title{display:flex;align-items:center;gap:7px;font-weight:800;font-size:14px}
+.sb-badge{background:var(--accent);color:#fff;border-radius:99px;padding:1px 7px;font-size:11px;font-weight:700}
+.sb-clear{display:flex;align-items:center;gap:4px;font-size:12px;font-weight:700;color:var(--red);background:none;padding:0}
+.sb-body{max-height:calc(100vh - 170px);overflow-y:auto;padding:14px 18px;display:flex;flex-direction:column;gap:16px}
+.sb-footer{padding:14px 18px;border-top:1px solid var(--border)}
+.divider{border-top:1px solid var(--border);padding-top:14px}
+.lbl{font-size:9.5px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:7px}
+.sublbl{font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:9px 0 5px}
+
+/* ── CHIPS ───────────────────── */
+.chips{display:flex;flex-wrap:wrap;gap:5px}
+.chip{padding:3px 8px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;border:1.5px solid var(--border);background:var(--surf2);color:var(--txt);transition:all .12s;user-select:none;display:inline-flex;align-items:center;gap:3px;line-height:1.6;white-space:nowrap}
+.chip:hover{border-color:var(--accent);color:var(--accent)}
+.chip.on{background:var(--accent);border-color:var(--accent);color:#fff}
+/* store chips */
+.chip.s-tx{background:#e60026;border-color:#e60026;color:#fff}
+.chip.s-mp{background:#0052cc;border-color:#0052cc;color:#fff}
+.chip.s-id{background:#6d28d9;border-color:#6d28d9;color:#fff}
+.chip.s-is{background:#333;border-color:#333;color:#fff}
+.chip.s-ol{background:#3d7ab5;border-color:#3d7ab5;color:#fff}
+.chip.s-uz{background:#6366f1;border-color:#6366f1;color:#fff}
+
+/* ── BUTTONS ─────────────────── */
+.btn-search{width:100%;padding:12px 0;border-radius:12px;background:linear-gradient(135deg,#2563eb,#1d4ed8);color:#fff;font-weight:800;font-size:14px;display:flex;align-items:center;justify-content:center;gap:7px;box-shadow:0 4px 14px #2563eb44;transition:.15s}
+.btn-search:hover{opacity:.9;transform:translateY(-1px)}
+.btn-search:active{transform:none}
+.btn-clear2{width:100%;margin-top:7px;padding:9px 0;border-radius:10px;border:1.5px solid var(--border)!important;background:transparent;color:var(--muted);font-weight:700;font-size:12px;transition:.15s}
+.btn-clear2:hover{border-color:var(--accent)!important;color:var(--accent)}
+
+/* ── PRICE SLIDER ─────────────── */
+.price-row{display:flex;justify-content:space-between;font-size:10.5px;color:var(--muted);margin-bottom:3px}
+
+/* ── WELCOME / EMPTY ──────────── */
+.state-card{background:var(--surf);border:1px solid var(--border);border-radius:22px;padding:56px 28px;text-align:center}
+.big-emoji{font-size:58px;margin-bottom:14px}
+.state-title{font-size:24px;font-weight:900;margin-bottom:10px;letter-spacing:-.4px}
+.state-sub{color:var(--muted);font-size:14px;max-width:400px;margin:0 auto 24px;line-height:1.65}
+.stats-row{display:flex;justify-content:center;gap:28px;flex-wrap:wrap}
+.stat-box{text-align:center}
+.stat-ico{font-size:22px}
+.stat-n{font-weight:900;font-size:20px;color:var(--accent)}
+.stat-lbl{font-size:11px;color:var(--muted)}
+
+/* ── RESULTS BAR ──────────────── */
+.res-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:10px}
+.res-count{font-weight:900;font-size:18px}
+.res-of{margin-left:6px;color:var(--muted);font-size:12px}
+.sort-row{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.sort-lbl{font-size:12px;color:var(--muted)}
+.sort-chip{padding:4px 10px;border-radius:7px;font-size:11.5px;font-weight:600;cursor:pointer;border:1.5px solid var(--border);background:var(--surf2);color:var(--txt);transition:.12s}
+.sort-chip:hover{border-color:var(--accent);color:var(--accent)}
+.sort-chip.on{background:var(--accent);border-color:var(--accent);color:#fff}
+
+/* ── CARDS ───────────────────── */
+.cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:14px}
+.card{background:var(--surf);border:1px solid var(--border);border-radius:18px;overflow:hidden;transition:box-shadow .18s,transform .18s}
+.card:hover{box-shadow:0 6px 28px rgba(0,0,0,.1);transform:translateY(-2px)}
+.dark .card:hover{box-shadow:0 6px 28px rgba(37,99,235,.2)}
+.card-stripe{height:3px}
+.card-body{padding:16px 18px}
+.card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:12px}
+.card-brand{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.12em;color:var(--accent);margin-bottom:2px}
+.card-brand.apple{color:#555}
+.card-name{font-weight:900;font-size:14.5px;line-height:1.3}
+.card-price-box{text-align:right;flex-shrink:0}
+.card-plbl{font-size:10px;color:var(--muted);margin-bottom:1px}
+.card-price{font-weight:900;font-size:16px;color:var(--green);white-space:nowrap}
+/* specs */
+.specs{display:grid;grid-template-columns:1fr 1fr;gap:7px;background:var(--surf2);border-radius:12px;padding:10px 12px;margin-bottom:12px}
+.sp{display:flex;align-items:flex-start;gap:6px}
+.sp-ic{color:var(--muted);flex-shrink:0;margin-top:1px;width:14px;height:14px}
+.sp-k{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+.sp-v{font-size:11px;font-weight:600;line-height:1.3;margin-top:1px}
+/* feature badges */
+.feat-row{display:flex;flex-wrap:wrap;gap:3px;margin-bottom:10px}
+.feat-tag{font-size:9.5px;padding:2px 6px;border-radius:4px;background:var(--surf2);border:1px solid var(--border);color:var(--muted)}
+/* stores */
+.stores-lbl{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:6px}
+.stores-list{display:flex;flex-direction:column;gap:5px}
+.st-row{display:flex;align-items:center;justify-content:space-between;padding:7px 10px;border-radius:9px;background:var(--surf2);border:1px solid var(--border)}
+.st-row.best{background:#f0fdf4;border-color:#bbf7d0}
+.dark .st-row.best{background:rgba(5,150,105,.1);border-color:rgba(5,150,105,.28)}
+.st-left{display:flex;align-items:center;gap:6px}
+.st-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.st-name{font-size:12px;font-weight:700}
+.best-tag{font-size:9px;font-weight:700;color:var(--green);background:#dcfce7;padding:1px 5px;border-radius:3px}
+.dark .best-tag{background:rgba(5,150,105,.18)}
+.st-right{display:flex;align-items:center;gap:6px}
+.st-price{font-weight:800;font-size:13px}
+.st-price.b{color:var(--green)}
+.st-link{color:var(--accent);display:flex}
+
+/* ── FOOTER ──────────────────── */
+footer{border-top:1px solid var(--border);margin-top:48px;padding:20px 16px}
+.ft{max-width:1440px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
+.ft-logo{display:flex;align-items:center;gap:7px}
+.ft-ico{width:24px;height:24px;border-radius:7px;background:linear-gradient(135deg,#2563eb,#059669);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900;font-size:9px}
+.ft-stats{display:flex;gap:16px;font-size:11.5px;color:var(--muted);flex-wrap:wrap}
+.ft-copy{font-size:11.5px;color:var(--muted)}
+svg{display:inline-block;vertical-align:middle}
+
+/* ══ AI YORDAMCHI ══ */
+.ai-btn{display:flex;align-items:center;gap:6px;padding:7px 14px;border-radius:10px;background:linear-gradient(135deg,#7c3aed,#2563eb);color:#fff;font-weight:700;font-size:13px;border:none;cursor:pointer;transition:.15s;box-shadow:0 2px 12px #7c3aed44}
+.ai-btn:hover{opacity:.9;transform:translateY(-1px)}
+/* modal overlay */
+#ai-modal{display:none;position:fixed;inset:0;z-index:500;background:rgba(0,0,0,.5);backdrop-filter:blur(6px);align-items:flex-end;justify-content:flex-end;padding:16px}
+#ai-modal.open{display:flex}
+#ai-box{width:380px;max-width:100%;height:580px;background:var(--surf);border:1px solid var(--border);border-radius:20px;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 16px 48px rgba(0,0,0,.25);animation:slideUp .25s ease}
+@keyframes slideUp{from{transform:translateY(40px);opacity:0}to{transform:none;opacity:1}}
+/* chat header */
+.ai-head{padding:14px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;background:linear-gradient(135deg,#7c3aed11,#2563eb11)}
+.ai-avatar{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#7c3aed,#2563eb);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.ai-head-info{flex:1}
+.ai-head-name{font-weight:800;font-size:14px}
+.ai-head-sub{font-size:11px;color:var(--muted)}
+.ai-status{width:8px;height:8px;border-radius:50%;background:#22c55e;flex-shrink:0;box-shadow:0 0 0 2px #22c55e44;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 2px #22c55e44}50%{box-shadow:0 0 0 5px #22c55e22}}
+.ai-close{width:28px;height:28px;border-radius:8px;border:1px solid var(--border);background:var(--surf2);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;flex-shrink:0}
+/* messages */
+.ai-msgs{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px}
+.ai-msgs::-webkit-scrollbar{width:3px}
+.ai-msgs::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+/* bubble */
+.msg{max-width:88%;display:flex;flex-direction:column;gap:3px}
+.msg.bot{align-self:flex-start}
+.msg.user{align-self:flex-end}
+.bubble{padding:9px 13px;border-radius:14px;font-size:13px;line-height:1.55;word-break:break-word}
+.msg.bot .bubble{background:var(--surf2);border:1px solid var(--border);border-bottom-left-radius:4px}
+.msg.user .bubble{background:linear-gradient(135deg,#7c3aed,#2563eb);color:#fff;border-bottom-right-radius:4px}
+.msg-time{font-size:10px;color:var(--muted);padding:0 4px}
+.msg.user .msg-time{text-align:right}
+/* laptop recommendation card inside chat */
+.rec-card{background:var(--surf);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-top:6px;font-size:12px}
+.rec-top{height:2px;background:linear-gradient(90deg,#7c3aed,#2563eb)}
+.rec-body{padding:10px 12px}
+.rec-brand{font-size:9.5px;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:#7c3aed;margin-bottom:2px}
+.rec-name{font-weight:800;font-size:13px;margin-bottom:6px;line-height:1.3}
+.rec-specs{display:grid;grid-template-columns:1fr 1fr;gap:3px;margin-bottom:6px}
+.rec-spec{font-size:10.5px;color:var(--muted)}
+.rec-spec b{color:var(--txt);font-weight:700}
+.rec-price{font-weight:900;font-size:14px;color:var(--green)}
+.rec-stores{font-size:10px;color:var(--muted);margin-top:2px}
+/* typing indicator */
+.typing{display:flex;align-items:center;gap:4px;padding:10px 14px;background:var(--surf2);border:1px solid var(--border);border-radius:14px;border-bottom-left-radius:4px;width:fit-content}
+.typing span{width:6px;height:6px;border-radius:50%;background:var(--muted);animation:blink 1.2s infinite}
+.typing span:nth-child(2){animation-delay:.2s}
+.typing span:nth-child(3){animation-delay:.4s}
+@keyframes blink{0%,80%,100%{transform:scale(1);opacity:.4}40%{transform:scale(1.2);opacity:1}}
+/* input row */
+.ai-input-row{padding:10px 12px;border-top:1px solid var(--border);display:flex;gap:8px;background:var(--surf)}
+.ai-input{flex:1;padding:9px 12px;border-radius:10px;border:1.5px solid var(--border);background:var(--surf2);color:var(--txt);font-size:13px;outline:none;font-family:inherit;resize:none;max-height:90px;transition:.15s}
+.ai-input:focus{border-color:#7c3aed}
+.ai-send{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#7c3aed,#2563eb);color:#fff;border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:.15s;flex-shrink:0}
+.ai-send:hover{opacity:.9}
+.ai-send:disabled{opacity:.4;cursor:not-allowed}
+/* quick suggestions */
+.ai-suggest{padding:0 12px 8px;display:flex;flex-wrap:wrap;gap:5px}
+.sug-chip{padding:4px 9px;border-radius:7px;font-size:11px;font-weight:600;border:1.5px solid var(--border);background:var(--surf2);color:var(--muted);cursor:pointer;transition:.12s;white-space:nowrap}
+.sug-chip:hover{border-color:#7c3aed;color:#7c3aed}
+
+/* ══ LANGUAGE SELECTOR ══ */
+.lang-sel{display:flex;border:1.5px solid var(--border);border-radius:8px;overflow:hidden;flex-shrink:0}
+.lang-opt{padding:4px 9px;font-size:11px;font-weight:700;border:none;background:var(--surf2);color:var(--muted);cursor:pointer;transition:.12s;border-right:1px solid var(--border)}
+.lang-opt:last-child{border-right:none}
+.lang-opt.active{background:var(--accent);color:#fff}
+.lang-opt:hover:not(.active){background:var(--border)}
+
+/* ══ AD SYSTEM ══ */
+.ad-slot{width:100%}
+.ad-slot:empty{display:none}
+.ad-banner{position:relative;border-radius:10px;overflow:hidden;cursor:pointer;transition:.15s}
+.ad-banner:hover{opacity:.95}
+.ad-banner img{width:100%;display:block;border-radius:10px}
+.ad-banner-text{display:flex;align-items:center;gap:12px;padding:12px 16px;background:linear-gradient(135deg,#f59e0b,#ef4444);color:#fff;border-radius:10px}
+.ad-banner-text .ad-ico{font-size:28px;flex-shrink:0}
+.ad-banner-text .ad-content{flex:1}
+.ad-banner-text .ad-title{font-weight:800;font-size:14px;margin-bottom:2px}
+.ad-banner-text .ad-desc{font-size:11.5px;opacity:.9}
+.ad-banner-text .ad-cta{flex-shrink:0;background:#fff;color:#ef4444;font-weight:800;font-size:12px;padding:6px 12px;border-radius:7px;white-space:nowrap}
+.ad-label{position:absolute;top:6px;left:6px;font-size:9px;font-weight:700;background:rgba(0,0,0,.4);color:#fff;padding:1px 5px;border-radius:3px;letter-spacing:.05em}
+.ad-close-btn{position:absolute;top:5px;right:5px;width:22px;height:22px;border-radius:50%;background:rgba(0,0,0,.4);color:#fff;font-size:11px;display:flex;align-items:center;justify-content:center;cursor:pointer;border:none;line-height:1;transition:.15s}
+.ad-close-btn:hover{background:rgba(0,0,0,.7)}
+/* ad timer bar */
+.ad-timer-bar{height:3px;background:rgba(255,255,255,.3);position:relative;overflow:hidden;border-radius:0 0 10px 10px}
+.ad-timer-fill{height:100%;background:rgba(255,255,255,.8);transition:width linear}
+
+/* ══ ADMIN PANEL ══ */
+#admin-panel{display:none;position:fixed;inset:0;z-index:600;background:rgba(0,0,0,.7);align-items:center;justify-content:center}
+#admin-panel.open{display:flex}
+.admin-box{width:700px;max-width:96vw;max-height:90vh;background:var(--surf);border:1px solid var(--border);border-radius:20px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 20px 60px rgba(0,0,0,.4)}
+.admin-head{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:linear-gradient(135deg,#111,#1e1e2e)}
+.admin-head-title{font-weight:900;font-size:16px;color:#fff;display:flex;align-items:center;gap:8px}
+.admin-close{width:30px;height:30px;border-radius:8px;background:rgba(255,255,255,.1);border:none;color:#fff;cursor:pointer;font-size:16px}
+.admin-body{flex:1;overflow-y:auto;padding:20px}
+.admin-section{margin-bottom:24px}
+.admin-section-title{font-weight:800;font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);margin-bottom:12px}
+.admin-ads-list{display:flex;flex-direction:column;gap:10px}
+.admin-ad-item{background:var(--surf2);border:1px solid var(--border);border-radius:12px;padding:12px 14px;display:flex;align-items:flex-start;gap:12px}
+.admin-ad-info{flex:1;min-width:0}
+.admin-ad-slot-badge{display:inline-block;font-size:10px;font-weight:700;padding:1px 6px;border-radius:4px;background:var(--accent);color:#fff;margin-bottom:4px}
+.admin-ad-name{font-weight:700;font-size:13px;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.admin-ad-meta{font-size:11px;color:var(--muted)}
+.admin-ad-actions{display:flex;gap:6px;flex-shrink:0}
+.admin-btn-edit{padding:4px 10px;border-radius:7px;font-size:11px;font-weight:700;border:1.5px solid var(--accent);background:transparent;color:var(--accent);cursor:pointer;transition:.12s}
+.admin-btn-edit:hover{background:var(--accent);color:#fff}
+.admin-btn-del{padding:4px 10px;border-radius:7px;font-size:11px;font-weight:700;border:1.5px solid #ef4444;background:transparent;color:#ef4444;cursor:pointer;transition:.12s}
+.admin-btn-del:hover{background:#ef4444;color:#fff}
+.admin-btn-toggle{padding:4px 10px;border-radius:7px;font-size:11px;font-weight:700;border:1.5px solid var(--border);background:var(--surf2);color:var(--muted);cursor:pointer;transition:.12s}
+.admin-btn-toggle.on{border-color:#22c55e;color:#22c55e}
+/* add form */
+.admin-form{background:var(--surf2);border:1.5px dashed var(--border);border-radius:14px;padding:16px}
+.admin-form-title{font-weight:700;font-size:13px;margin-bottom:12px;color:var(--muted)}
+.admin-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.admin-form-grid label{display:flex;flex-direction:column;gap:4px;font-size:11.5px;font-weight:600;color:var(--muted)}
+.admin-form-grid input,.admin-form-grid select,.admin-form-grid textarea{padding:7px 10px;border-radius:8px;border:1.5px solid var(--border);background:var(--surf);color:var(--txt);font-size:12px;font-family:inherit;outline:none;transition:.12s}
+.admin-form-grid input:focus,.admin-form-grid select:focus,.admin-form-grid textarea:focus{border-color:var(--accent)}
+.admin-form-grid .full{grid-column:1/-1}
+.admin-save-btn{margin-top:10px;padding:9px 20px;border-radius:10px;background:var(--accent);color:#fff;font-weight:700;font-size:13px;border:none;cursor:pointer;transition:.12s}
+.admin-save-btn:hover{opacity:.9}
+/* admin fab */
+#admin-fab{position:fixed;bottom:20px;left:20px;z-index:400;width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#111,#333);color:#fff;font-size:18px;border:none;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,.3);display:none;align-items:center;justify-content:center;transition:.15s}
+#admin-fab:hover{transform:scale(1.05)}
+/* admin login */
+.admin-login{display:flex;flex-direction:column;gap:10px;padding:30px;text-align:center}
+.admin-login h3{font-weight:900;font-size:18px;margin-bottom:4px}
+.admin-pin-input{padding:10px;border-radius:10px;border:1.5px solid var(--border);background:var(--surf2);color:var(--txt);font-size:20px;text-align:center;letter-spacing:8px;font-family:monospace;outline:none;width:180px;margin:0 auto;transition:.12s}
+.admin-pin-input:focus{border-color:var(--accent)}
+.admin-login-btn{padding:9px 24px;border-radius:10px;background:var(--accent);color:#fff;font-weight:700;font-size:14px;border:none;cursor:pointer;width:fit-content;margin:0 auto}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="nav-inner">
+    <div class="logo">
+      <div class="logo-icon">OL</div>
+      <div>
+        <span class="logo-text">only<b>lap</b></span>
+      </div>
+    </div>
+    <div class="nav-right">
+      <span class="nav-info" id="nav-count"></span>
+      <!-- Language selector -->
+      <div class="lang-sel" id="lang-sel">
+        <button class="lang-opt active" data-lang="uz">UZ</button>
+        <button class="lang-opt" data-lang="ru">RU</button>
+        <button class="lang-opt" data-lang="en">EN</button>
+      </div>
+      <button class="ai-btn" id="ai-open-btn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><path d="M8 12h.01M12 12h.01M16 12h.01"/></svg>
+        <span data-i18n="aiBtn">AI Yordamchi</span>
+      </button>
+      <button class="dark-btn" id="dark-btn">🌙</button>
+    </div>
+  </div>
+</nav>
+
+<!-- AD SLOT: TOP BANNER -->
+<div class="ad-slot" id="ad-top" data-slot="top"></div>
+
+<div class="layout">
+<!-- ═══════════════════ SIDEBAR ═══════════════════ -->
+<aside id="sidebar">
+  <div class="sb-head">
+    <div class="sb-title">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2.2" stroke-linecap="round"><path d="M3 4h18M7 9h10M11 14h2"/></svg>
+      Filtrlar
+      <span class="sb-badge" id="f-badge" style="display:none">0</span>
+    </div>
+    <button class="sb-clear" id="clear-top" style="display:none">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      Tozalash
+    </button>
+  </div>
+
+  <div class="sb-body">
+
+    <!-- BREND -->
+    <div>
+      <div class="lbl">Brend</div>
+      <div class="chips" id="c-brand"></div>
+    </div>
+
+    <!-- EKRAN -->
+    <div class="divider">
+      <div class="lbl">Ekran</div>
+      <div class="sublbl">O'lcham (inch)</div>
+      <div class="chips" id="c-dsize"></div>
+      <div class="sublbl">Ekran turi</div>
+      <div class="chips" id="c-dtype"></div>
+      <div class="sublbl">Yangilanish tezligi</div>
+      <div class="chips" id="c-dhz"></div>
+    </div>
+
+    <!-- CPU INTEL -->
+    <div class="divider">
+      <div class="lbl">Protsessor</div>
+      <div class="sublbl">Intel — avlod bo'yicha</div>
+      <div class="chips" id="c-cpu-intel"></div>
+      <div class="sublbl">AMD — seriya bo'yicha</div>
+      <div class="chips" id="c-cpu-amd"></div>
+      <div class="sublbl">Apple Silicon</div>
+      <div class="chips" id="c-cpu-apple"></div>
+    </div>
+
+    <!-- GPU -->
+    <div class="divider">
+      <div class="lbl">Video karta</div>
+      <div class="sublbl">Integratsiyalangan</div>
+      <div class="chips" id="c-gpu-int"></div>
+      <div class="sublbl">NVIDIA dedicated</div>
+      <div class="chips" id="c-gpu-nv"></div>
+      <div class="sublbl">AMD dedicated</div>
+      <div class="chips" id="c-gpu-amd"></div>
+    </div>
+
+    <!-- RAM -->
+    <div class="divider">
+      <div class="lbl">Minimal RAM</div>
+      <div class="chips" id="c-ram"></div>
+      <div class="sublbl">RAM turi</div>
+      <div class="chips" id="c-ramtype"></div>
+    </div>
+
+    <!-- SSD -->
+    <div class="divider">
+      <div class="lbl">Minimal SSD</div>
+      <div class="chips" id="c-ssd"></div>
+      <div class="sublbl">SSD interfeysi</div>
+      <div class="chips" id="c-ssdtype"></div>
+    </div>
+
+    <!-- OS -->
+    <div class="divider">
+      <div class="lbl">Operatsion tizim</div>
+      <div class="chips" id="c-os"></div>
+    </div>
+
+    <!-- PORTLAR -->
+    <div class="divider">
+      <div class="lbl">Portlar</div>
+      <div class="chips" id="c-ports"></div>
+    </div>
+
+    <!-- SIMSIZ -->
+    <div class="divider">
+      <div class="lbl">Simsiz ulanish</div>
+      <div class="sublbl">Wi-Fi</div>
+      <div class="chips" id="c-wifi"></div>
+      <div class="sublbl">Bluetooth</div>
+      <div class="chips" id="c-bt"></div>
+      <div class="sublbl">Mobil internet</div>
+      <div class="chips" id="c-mobile"></div>
+    </div>
+
+    <!-- QUVVAT -->
+    <div class="divider">
+      <div class="lbl">Quvvat adapteri</div>
+      <div class="chips" id="c-psu"></div>
+    </div>
+
+    <!-- XUSUSIYATLAR -->
+    <div class="divider">
+      <div class="lbl">Qo'shimcha xususiyatlar</div>
+      <div class="sublbl">Klaviatura / Xavfsizlik</div>
+      <div class="chips" id="c-feat-kbd"></div>
+      <div class="sublbl">Kamera / Audio</div>
+      <div class="chips" id="c-feat-cam"></div>
+    </div>
+
+    <!-- DO'KON -->
+    <div class="divider">
+      <div class="lbl">Do'kon</div>
+      <div class="chips" id="c-stores"></div>
+    </div>
+
+    <!-- NARX -->
+    <div class="divider">
+      <div class="lbl">Narx (UZS)</div>
+      <div>
+        <div class="price-row"><span>Minimal</span><span id="pmin-lbl">0 UZS</span></div>
+        <input type="range" id="rng-min" min="0" max="80000000" step="500000" value="0"/>
+      </div>
+      <div style="margin-top:8px">
+        <div class="price-row"><span>Maksimal</span><span id="pmax-lbl">Cheksiz</span></div>
+        <input type="range" id="rng-max" min="0" max="80000000" step="500000" value="80000000"/>
+      </div>
+    </div>
+
+  </div><!-- /sb-body -->
+
+  <div class="sb-footer">
+    <button class="btn-search" id="btn-search">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <span data-i18n="search">QIDIRISH</span>
+    </button>
+    <button class="btn-clear2" id="clear-bot" style="display:none" data-i18n="clearFilters">Filtrni tozalash</button>
+  </div>
+  <!-- AD SLOT: SIDEBAR -->
+  <div class="ad-slot" id="ad-sidebar" data-slot="sidebar" style="margin:0 14px 14px;border-radius:12px;overflow:hidden"></div>
+</aside>
+
+<!-- ═══════════════════ RESULTS ═══════════════════ -->
+<main>
+
+  <!-- Welcome -->
+  <div id="st-welcome" class="state-card">
+    <div class="big-emoji">🔍</div>
+    <h2 class="state-title">Laptop qidirish</h2>
+    <p class="state-sub">Chap paneldan kerakli xususiyatlarni tanlang va <strong>"QIDIRISH"</strong> tugmasini bosing.</p>
+    <div class="stats-row">
+      <div class="stat-box"><div class="stat-ico">💻</div><div class="stat-n" id="st-total">—</div><div class="stat-lbl">Model</div></div>
+      <div class="stat-box"><div class="stat-ico">🏪</div><div class="stat-n">6</div><div class="stat-lbl">Do'kon</div></div>
+      <div class="stat-box"><div class="stat-ico">🖥️</div><div class="stat-n">18</div><div class="stat-lbl">Brend</div></div>
+      <div class="stat-box"><div class="stat-ico">⚡</div><div class="stat-n">20+</div><div class="stat-lbl">GPU turi</div></div>
+    </div>
+  </div>
+
+  <!-- Empty -->
+  <div id="st-empty" class="state-card" style="display:none">
+    <div class="big-emoji">😔</div>
+    <h2 class="state-title">Natija topilmadi</h2>
+    <p class="state-sub">Tanlangan xususiyatlarga mos laptop topilmadi. Filtrlarni biroz kengaytirib qayta urinib ko'ring.</p>
+    <button onclick="clearAll()" style="padding:9px 22px;border-radius:10px;border:1.5px solid var(--border);background:var(--surf2);font-weight:700;cursor:pointer;color:var(--txt);font-family:inherit;font-size:13px">Filtrni tozalash</button>
+  </div>
+
+  <!-- Results -->
+  <div id="st-results" style="display:none">
+    <div class="res-bar">
+      <div>
+        <span class="res-count" id="res-count">0</span>
+        <span class="res-of"> ta laptop topildi — <span id="res-total">—</span> ta ichidan</span>
+      </div>
+      <div class="sort-row">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2"><path d="M3 6h18M7 12h10M11 18h2"/></svg>
+        <span class="sort-lbl">Saralash:</span>
+        <div class="sort-chip on"  data-s="cheapest"  onclick="setSort('cheapest')">💰 Arzon</div>
+        <div class="sort-chip"     data-s="powerful"  onclick="setSort('powerful')">🔥 Kuchli</div>
+        <div class="sort-chip"     data-s="lightest"  onclick="setSort('lightest')">🪶 Engil</div>
+      </div>
+    </div>
+    <div class="cards-grid" id="cards-grid"></div>
+    <!-- AD SLOT: RESULTS -->
+    <div class="ad-slot" id="ad-results" data-slot="results" style="margin-top:20px"></div>
+  </div>
+
+</main>
+</div><!-- /layout -->
+
+<footer>
+  <div class="ft">
+    <div class="ft-logo">
+      <div class="ft-ico">OL</div>
+      <span style="font-weight:900;font-size:14px">only<span style="color:var(--accent)">lap</span></span>
+    </div>
+    <div class="ft-stats" id="ft-stats"></div>
+    <span class="ft-copy">© 2025 onlylap.uz</span>
+  </div>
+</footer>
+
+<script>
+/* ════════════════════════════════════════════════════════════
+   DATABASE
+════════════════════════════════════════════════════════════ */
+const DB=[
+  // ASUS
+  {id:1,brand:"ASUS",name:"ROG Zephyrus G14 2024",cpu:"AMD Ryzen 9 8945HS",cpuKey:"Ryzen 9 7000+",gpu:"NVIDIA RTX 4060",gpuKey:"RTX 4060",ram:16,ramTypeKey:"LPDDR5X",ssd:1024,ssdKey:"NVMe PCIe 4.0",display:{size:14,type:"OLED",hz:165},os:"Windows 11 Home",battery:"73Wh",weight:1.5,ports:["USB-A","USB-C","Thunderbolt 4","HDMI 2.1","SD card reader"],wifi:"Wi-Fi 6E",bt:"Bluetooth 5.3",psu:"90W",features:["Backlit klaviatura","Barmoq izi sensori","Veb-kamera 1080p FHD","Dolby Atmos"],stores:[{n:"Texnomart",p:14200000},{n:"MediaPark",p:13900000},{n:"Uzum Market",p:13700000}]},
+  {id:2,brand:"ASUS",name:"ROG Strix G16 2024",cpu:"Intel Core i7-13650HX",cpuKey:"Core i7 13th-gen HX",gpu:"NVIDIA RTX 4070",gpuKey:"RTX 4070",ram:32,ramTypeKey:"DDR5",ssd:1024,ssdKey:"NVMe PCIe 4.0",display:{size:16,type:"IPS",hz:240},os:"Windows 11 Home",battery:"90Wh",weight:2.5,ports:["USB-A","USB-C","Thunderbolt 4","HDMI 2.1","SD card reader","Ethernet"],wifi:"Wi-Fi 6E",bt:"Bluetooth 5.3",psu:"230W",features:["RGB klaviatura","Barmoq izi sensori","Veb-kamera 720p HD","TPM 2.0"],stores:[{n:"Texnomart",p:19800000},{n:"Idea Store",p:19500000},{n:"OLX",p:18900000}]},
+  {id:3,brand:"ASUS",name:"ZenBook 14 OLED 2024",cpu:"Intel Core Ultra 7 155H",cpuKey:"Core Ultra 7",gpu:"Intel Arc",gpuKey:"Intel Arc",ram:16,ramTypeKey:"LPDDR5X",ssd:512,ssdKey:"NVMe PCIe 4.0",display:{size:14,type:"OLED",hz:120},os:"Windows 11 Home",battery:"75Wh",weight:1.2,ports:["USB-A","USB-C","Thunderbolt 4","HDMI 2.1","SD card reader"],wifi:"Wi-Fi 6E",bt:"Bluetooth 5.3",psu:"65W",features:["Backlit klaviatura","Barmoq izi sensori","Veb-kamera 1080p FHD","IR kamera","TPM 2.0"],stores:[{n:"Texnomart",p:10900000},{n:"Uzum Market",p:10600000}]},
+  {id:4,brand:"ASUS",name:"Vivobook 16X OLED",cpu:"AMD Ryzen 7 7745HX",cpuKey:"Ryzen 7 7000+",gpu:"NVIDIA RTX 4060",gpuKey:"RTX 4060",ram:16,ramTypeKey:"DDR5",ssd:512,ssdKey:"NVMe PCIe 4.0",display:{size:16,type:"OLED",hz:120},os:"Windows 11 Home",battery:"96Wh",weight:2.0,ports:["USB-A","USB-C","HDMI 2.1","SD card reader"],wifi:"Wi-Fi 6",bt:"Bluetooth 5.0",psu:"100W",features:["Backlit klaviatura","Barmoq izi sensori","Veb-kamera 1080p FHD"],stores:[{n:"MediaPark",p:13400000},{n:"Texnomart",p:13800000}]},
+  {id:5,brand:"ASUS",name:"ProArt Studiobook 16",cpu:"Intel Core i9-13980HX",cpuKey:"Core i9 13th-gen H",gpu:"NVIDIA RTX 4070",gpuKey:"RTX 4070",ram:32,ramTypeKey:"DDR5",ssd:2048,ssdKey:"NVMe PCIe 5.0",display:{size:16,type:"OLED",hz:60},os:"Windows 11 Pro",battery:"96Wh",weight:2.4,ports:["USB-A","USB-C","Thunderbolt 4","HDMI 2.1","SD card reader","Ethernet"],wifi:"Wi-Fi 6E",bt:"Bluetooth 5.3",psu:"200W",features:["Backlit klaviatura","Barmoq izi sensori","Veb-kamera 1080p FHD","TPM 2.0"],stores:[{n:"Idea Store",p:26500000},{n:"Texnomart",p:27000000}]},
+  {id:6,brand:"ASUS",name:"TUF Gaming A15",cpu:"AMD Ryzen 7 7745HX",cpuKey:"Ryzen 7 7000+",gpu:"NVIDIA RTX 4060",gpuKey:"RTX 4060",ram:16,ramTypeKey:"DDR5",ssd:512,ssdKey:"NVMe PCIe 4.0",display:{size:15,type:"IPS",hz:144},os:"Windows 11 Home",battery:"90Wh",weight:2.2,ports:["USB-A","USB-C","HDMI 2.1","Ethernet"],wifi:"Wi-Fi 6",bt:"Bluetooth 5.0",psu:"180W",features:["Backlit klaviatura","Veb-kamera 720p HD"],stores:[{n:"Texnomart",p:11500000},{n:"MediaPark",p:11200000},{n:"Uzum Market",p:10900000}]},
+
+  // Lenovo
+  {id:10,brand:"Lenovo",name:"Legion 5 Pro Gen 9",cpu:"AMD Ryzen 7 8845HS",cpuKey:"Ryzen 7 8000",gpu:"NVIDIA RTX 4070",gpuKey:"RTX 4070",ram:32,ramTypeKey:"DDR5",ssd:1024,ssdKey:"NVMe PCIe 4.0",display:{size:16,type:"IPS",hz:165},os:"Windows 11 Home",battery:"80Wh",weight:2.5,ports:["USB-A","USB-C","Thunderbolt 4","HDMI 2.1","SD card reader","Ethernet"],wifi:"Wi-Fi 6E",bt:"Bluetooth 5.2",psu:"230W",features:["RGB klaviatura","Barmoq izi sensori","Veb-kamera 1080p FHD","TPM 2.0"],stores:[{n:"Texnomart",p:18900000},{n:"MediaPark",p:18500000},{n:"Uzum Market",p:18200000}]},
+  {id:11,brand:"Lenovo",name:"ThinkPad X1 Carbon Gen 12",cpu:"Intel Core Ultra 7 165U",cpuKey:"Core Ultra 7",gpu:"Intel Arc",gpuKey:"Intel Arc",ram:32,ramTypeKey:"LPDDR5X",ssd:1024,ssdKey:"NVMe PCIe 4.0",display:{size:14,type:"IPS",hz:60},os:"Windows 11 Pro",battery:"57Wh",weight:1.1,ports:["USB-A","USB-C","Thunderbolt 4","HDMI 2.1","Ethernet"],wifi:"Wi-Fi 6E",bt:"Bluetooth 5.3",psu:"65W",features:["Backlit klaviatura","Barmoq izi sensori","IR kamera","TPM 2.0"],stores:[{n:"Idea Store",p:17500000},{n:"Texnomart",p:18000000}]},
+  {id:12,brand:"Lenovo",name:"IdeaPad Slim 5 Gen 9",cpu:"Intel Core Ultra 5 125U",cpuKey:"Core Ultra 5",gpu:"Intel Iris Xe",gpuKey:"Intel Iris Xe",ram:16,ramTypeKey:"LPDDR5",ssd:512,ssdKey:"NVMe PCIe 3.0",display:{size:14,type:"IPS",hz:60},os:"Windows 11 Home",battery:"75Wh",weight:1.46,ports:["USB-A","USB-C","HDMI 2.1","SD card reader"],wifi:"Wi-Fi 6",bt:"Bluetooth 5.2",psu:"65W",features:["Backlit klaviatura","Barmoq izi sensori","Veb-kamera 1080p FHD"],stores:[{n:"Texnomart",p:7200000},{n:"Uzum Market",p:6900000},{n:"OLX",p:6700000}]},
+  {id:13,brand:"Lenovo",name:"Yoga Pro 9i Gen 9",cpu:"Intel Core Ultra 9 185H",cpuKey:"Core Ultra 9",gpu:"NVIDIA RTX 4070",gpuKey:"RTX 4070",ram:32,ramTypeKey:"LPDDR5X",ssd:1024,ssdKey:"NVMe PCIe 4.0",display:{size:16,type:"Mini LED",hz:165},os:"Windows 11 Home",battery:"75Wh",weight:1.99,ports:["USB-A","USB-C","Thunderbolt 4","HDMI 2.1","SD card reader"],wifi:"Wi-Fi 6E",bt:"Bluetooth 5.3",psu:"140W",features:["Backlit klaviatura","IR kamera","TPM 2.0","Dolby Atmos"],stores:[{n:"Texnomart",p:21000000},{n:"Idea Store",p:20500000}]},
+  {id:14,brand:"Lenovo",name:"Legion Slim 5 Gen 9",cpu:"AMD Ryzen 7 8745H",cpuKey:"Ryzen 7 8000",gpu:"NVIDIA RTX 4060",gpuKey:"RTX 4060",ram:16,ramTypeKey:"DDR5",ssd:512,ssdKey:"NVMe PCIe 4.0",display:{size:16,type:"IPS",hz:165},os:"Windows 11 Home",battery:"80Wh",weight:2.0,ports:["USB-A","USB-C","HDMI 2.1","Ethernet"],wifi:"Wi-Fi 6E",bt:"Bluetooth 5.2",psu:"140W",features:["Backlit klaviatura","Veb-kamera 1080p FHD"],stores:[{n:"Texnomart",p:12900000},{n:"MediaPark",p:12600000},{n:"Uzum Market",p:12400000}]},
+  {id:15,brand:"Lenovo",name:"IdeaPad Gaming 3",cpu:"AMD Ryzen 5 7535H",cpuKey:"Ryzen 5 7000+",gpu:"NVIDIA RTX 4050",gpuKey:"RTX 4050",ram:8,ramTypeKey:"DDR5",ssd:512,ssdKey:"NVMe PCIe 3.0",display:{size:15,type:"IPS",hz:120},os:"Windows 11 Home",battery:"45Wh",weight:2.3,ports:["USB-A","USB-C","HDMI 2.1","Ethernet"],wifi:"Wi-Fi 5",bt:"Bluetooth 5.0",psu:"135W",features:["Backlit klaviatura","Veb-kamera 720p HD"],stores:[{n:"Texnomart",p:8100000},{n:"Uzum Market",p:7900000},{n:"OLX",p:7600000}]},
+  {id:16,brand:"Lenovo",name:"ThinkPad E15 Gen 4",cpu:"Intel Core i5-1235U",cpuKey:"Core i5 12th-gen U",gpu:"Intel Iris Xe",gpuKey:"Intel Iris Xe",ram:8,ramTypeKey:"DDR4",ssd:256,ssdKey:"NVMe PCIe 3.0",display:{size:15,type:"IPS",hz:60},os:"Windows 11 Pro",battery:"57Wh",weight:1.76,ports:["USB-A","USB-C","HDMI 2.1","Ethernet","SD card reader"],wifi:"Wi-Fi 6",bt:"Bluetooth 5.2",psu:"65W",features:["Backlit klaviatura","Barmoq izi sensori","Veb-kamera 720p HD","TPM 2.0"],stores:[{n:"Texnomart",p:5400000},{n:"Uzum Market",p:5200000}]},
+  {id:17,brand:"Lenovo",name:"IdeaPad 1 15",cpu:"AMD Athlon Gold 7220U",cpuKey:"Athlon Gold",gpu:"AMD Radeon",gpuKey:"AMD Radeon Vega",ram:4,ramTypeKey:"LPDDR4x",ssd:128,ssdKey:"SSD SATA",display:{size:15,type:"TN",hz:60},os:"Windows 11 Home",battery:"38Wh",weight:1.5,ports:["USB-A","USB-C","HDMI 2.1"],wifi:"Wi-Fi 5",bt:"Bluetooth 5.0",psu:"45W",features:["Veb-kamera 720p HD"],stores:[{n:"Texnomart",p:2800000},{n:"OLX",p:2600000}]},
+
+  // Apple
+  {id:20,brand:"Apple",name:'MacBook Air 13" M1',cpu:"Apple M1",cpuKey:"M1",gpu:"Apple GPU 7-core",gpuKey:"Apple GPU",ram:8,ramTypeKey:"Unified",ssd:256,ssdKey:"Apple SSD",display:{size:13,type:"Retina",hz:60},os:"macOS Ventura",battery:"49.9Wh",weight:1.29,ports:["USB-C","Thunderbolt 3"],wifi:"Wi-Fi 6",bt:"Bluetooth 5.0",psu:"30W",features:["Barmoq izi sensori","Veb-kamera 720p HD"],stores:[{n:"iStore UZ",p:10500000},{n:"OLX",p:9800000}]},
+  {id:21,brand:"Apple",name:'MacBook Air 13" M3',cpu:"Apple M3",cpuKey:"M3",gpu:"Apple GPU 10-core",gpuKey:"Apple GPU",ram:16,ramTypeKey:"Unified",ssd:512,ssdKey:"Apple SSD",display:{size:13,type:"Liquid Retina",hz:60},os:"macOS Sonoma",battery:"52.6Wh",weight:1.24,ports:["USB-C","Thunderbolt 3"],wifi:"Wi-Fi 6E",bt:"Bluetooth 5.3",psu:"35W",features:["Barmoq izi sensori","Veb-kamera 1080p FHD","IR kamera"],stores:[{n:"iStore UZ",p:16500000},{n:"Uzum Market",p:16200000},{n:"OLX",p:15800000}]},
+  {id:22,brand:"Apple",name:'MacBook Air 15" M3',cpu:"Apple M3",cpuKey:"M3",gpu:"Apple GPU 10-core",gpuKey:"Apple GPU",ram:16,ramTypeKey:"Unified",ssd:512,ssdKey:"Apple SSD",display:{size:15,type:"Liquid Retina",hz:60},os:"macOS Sonoma",battery:"66.5Wh",weight:1.51,ports:["USB-C","Thunderbolt 3"],wifi:"Wi-Fi 6E",bt:"Bluetooth 5.3",psu:"35W",features:["Barmoq izi sensori","Veb-kamera 1080p FHD","IR kamera"],stores:[{n:"iStore UZ",p:19500000},{n:"Texnomart",p:19800000},{n:"Uzum Market",p:19200000}]},
+  {id:23,brand:"Apple",name:'MacBook Air 13" M4',cpu:"Apple M4",cpuKey:"M4",gpu:"Apple GPU 10-core",gpuKey:"Apple GPU",ram:16,ramTypeKey:"Unified",ssd:256,ssdKey:"Apple SSD",display:{size:13,type:"Liquid Retina",hz:60},os:"macOS Sequoia",battery:"52.6Wh",weight:1.24,ports:["USB-C","Thunderbolt 4"],wifi:"Wi-Fi 6E",bt:"Bluetooth 5.3",psu:"30W",features:["Barmoq izi sensori","Veb-kamera 1080p FHD","IR kamera"],stores:[{n:"iStore UZ",p:15000000},{n:"Uzum Market",p:14700000}]},
+  {id:24,brand:"Apple",name:'MacBook Air 15" M4',cpu:"Apple M4",cpuKey:"M4",gpu:"Apple GPU 10-core",gpuKey:"Apple GPU",ram:16,ramTypeKey:"Unified",ssd:512,ssdKey:"Apple SSD",display:{size:15,type:"Liquid Retina",hz:60},os:"macOS Sequoia",battery:"66.5Wh",weight:1.51,ports:["USB-C","Thunderbolt 4"],wifi:"Wi-Fi 6E",bt:"Bluetooth 5.3",psu:"35W",features:["Barmoq izi sensori","Veb-kamera 1080p FHD","IR kamera"],stores:[{n:"iStore UZ",p:18500000},{n:"Uzum Market",p:18200000}]},
+  {id:25,brand:"Apple",name:'MacBook Pro 14" M4',cpu:"Apple M4",cpuKey:"M4",gpu:"Apple GPU 10-core",gpuKey:"Apple GPU",ram:16,ramTypeKey:"Unified",ssd:512,ssdKey:"Apple SSD",display:{size:14,type:"Liquid Retina",hz:120},os:"macOS Sequoia",battery:"72.4Wh",weight:1.55,ports:["USB-C","Thunderbolt 4","HDMI 2.1","SD card reader"],wifi:"Wi-Fi 6E",bt:"Bluetooth 5.3",psu:"70W",features:["Barmoq izi sensori","Veb-kamera 1080p FHD","IR kamera","Dolby Atmos"],stores:[{n:"iStore UZ",p:22000000},{n:"Uzum Market",p:21500000}]},
+  {id:26,brand:"Apple",name:'MacBook Pro 14" M4 Pro',cpu:"Apple M4 Pro",cpuKey:"M4 Pro",gpu:"Apple GPU 20-core",gpuKey:"Apple GPU",ram:24,ramTypeKey:"Unified",ssd:512,ssdKey:"Apple SSD",display:{size:14,type:"Liquid Retina",hz:120},os:"macOS Sequoia",battery:"72.4Wh",weight:1.61,ports:["USB-C","Thunderbolt 5","HDMI 2.1","SD card reader"],wifi:"Wi-Fi 6E",bt:"Bluetooth 5.3",psu:"96W",features:["Barmoq izi sensori","Veb-kamera 1080p FHD","IR kamera","Dolby Atmos"],stores:[{n:"iStore UZ",p:29500000},{n:"Texnomart",p:30000000}]},
+  {id:27,brand:"Apple",name:'MacBook Pro 16" M4 Max',cpu:"Apple M4 Max",cpuKey:"M4 Max",gpu:"Apple GPU 40-core",gpuKey:"Apple GPU",ram:48,ramTypeKey:"Unified",ssd:1024,ssdKey:"Apple SSD",display:{size:16,type:"Liquid Retina",hz:120},os:"macOS Sequoia",battery:"100Wh",weight:2.14,ports:["USB-C","Thunderbolt 5","HDMI 2.1","SD card reader"],wifi:"Wi-Fi 6E",bt:"Bluetooth 5.3",psu:"140W",features:["Barmoq izi sensori","Veb-kamera 1080p FHD","IR kamera","Dolby Atmos"],stores:[{n:"iStore UZ",p:47000000},{n:"OLX",p:45000000}]},
+  {id:28,brand:"Apple",name:'MacBook Pro 14" M3 Pro',cpu:"Apple M3 Pro",cpuKey:"M3 Pro",gpu:"Apple GPU 18-core",gpuKey:"Apple GPU",ram:18,ramTypeKey:"Unified",ssd:512,ssdKey:"Apple SSD",display:{size:14,type:"Liquid Retina",hz:120},os:"macOS Sonoma",battery:"72.4Wh",weight:1.61,ports:["USB-C","Thunderbolt 4","HDMI 2.1","SD card reader"],wifi:"Wi-Fi 6E",bt:"Bluetooth 5.3",psu:"96W",features:["Barmoq izi sensori","Veb-kamera 1080p FHD","IR kamera","Dolby Atmos"],stores:[{n:"iStore UZ",p:26000000},{n:"Uzum Market",p:25500000}]},
+  {id:29,brand:"Apple",name:'MacBook Pro 16" M3 Pro',cpu:"Apple M3 Pro",cpuKey:"M3 Pro",gpu:"Apple GPU 18-core",gpuKey:"Apple GPU",ram:18,ramTypeKey:"Unified",ssd:512,ssdKey:"Apple SSD",display:{size:16,type:"Liquid Retina",hz:120},os:"macOS Sonoma",battery:"100Wh",weight:2.14,ports:["USB-C","Thunderbolt 4","HDMI 2.1","SD card reader"],wifi:"Wi-Fi 6E",bt:"Bluetooth 5.3",psu:"140W",features:["Barmoq izi sensori","Veb-kamera 1080p FHD","IR kamera","Dolby Atmos"],stores:[{n:"iStore UZ",p:33000000},{n:"Uzum Market",p:32500000}]},
+  {id:30,brand:"Apple",name:'MacBook Pro 16" M3 Max',cpu:"Apple M3 Max",cpuKey:"M3 Max",gpu:"Apple GPU 40-core",gpuKey:"Apple GPU",ram:48,ramTypeKey:"Unified",ssd:1024,ssdKey:"Apple SSD",display:{size:16,type:"Liquid Retina",hz:120},os:"macOS Sonoma",battery:"100Wh",weight:2.14,ports:["USB-C","Thunderbolt 4","HDMI 2.1","SD card reader"],wifi:"Wi-Fi 6E",bt:"Bluetooth 5.3",psu:"140W",features:["Barmoq izi sensori","Veb-kamera 1080p FHD","IR kamera","Dolby Atmos"],stores:[{n:"iStore UZ",p:40000000},{n:"OLX",p:38000000}]},
+
+  // Dell
+  {id:40,brand:"Dell",name:"XPS 15 9530",cpu:"Intel Core i7-13700H",cpuKey:"Core i7 13th-gen H",gpu:"NVIDIA RTX 4060",gpuKey:"RTX 4060",ram:16,ramTypeKey:"DDR5",ssd:512,ssdKey:"NVMe PCIe 4.0",display:{size:15,type:"OLED",hz:60},os:"Windows 11 Home",battery:"86Wh",weight:1.86,ports:["USB-A","USB-C","Thunderbolt 4","SD card reader"],wifi:"Wi-Fi 6E",bt:"Bluetooth 5.3",psu:"130W",features:["Backlit klaviatura","Barmoq izi sensori","IR kamera","TPM 2.0"],stores:[{n:"Texnomart",p:16800000},{n:"MediaPark",p:16500000},{n:"Uzum Market",p:16200000}]},
+  {id:41,brand:"Dell",name:"Alienware m18 R2",cpu:"Intel Core i9-14900HX",cpuKey:"Core i9 14th-gen HX",gpu:"NVIDIA RTX 4090",gpuKey:"RTX 4090",ram:32,ramTypeKey:"DDR5",ssd:2048,ssdKey:"NVMe PCIe 4.0",display:{size:18,type:"IPS",hz:240},os:"Windows 11 Home",battery:"99Wh",weight:4.2,ports:["USB-A","USB-C","Thunderbolt 4","HDMI 2.1","SD card reader","Ethernet"],wifi:"Wi-Fi 6E",bt:"Bluetooth 5.3",psu:"330W",features:["RGB klaviatura","Barmoq izi sensori","Veb-kamera 1080p FHD","TPM 2.0","Dolby Atmos"],stores:[{n:"Idea Store",p:52000000},{n:"OLX",p:50000000}]},
+  {id:42,brand:"Dell",name:"Inspiron 15 3000",cpu:"Intel Core i5-1235U",cpuKey:"Core i5 12th-gen U",gpu:"Intel Iris Xe",gpuKey:"Intel Iris Xe",ram:8,ramTypeKey:"DDR4",ssd:256,ssdKey:"NVMe PCIe 3.0",display:{size:15,type:"IPS",hz:60},os:"Windows 11 Home",battery:"54Wh",weight:1.89,ports:["USB-A","USB-C","HDMI 2.1","SD card reader","Ethernet"],wifi:"Wi-Fi 5",bt:"Bluetooth 5.0",psu:"65W",features:["Barmoq izi sensori","Veb-kamera 720p HD"],stores:[{n:"Texnomart",p:4900000},{n:"Uzum Market",p:4700000},{n:"OLX",p:4500000}]},
+  {id:43,brand:"Dell",name:"Inspiron 14 5420",cpu:"Intel Core i3-1215U",cpuKey:"Core i3 12th-gen U",gpu:"Intel UHD",gpuKey:"Intel UHD",ram:8,ramTypeKey:"DDR4",ssd:256,ssdKey:"SSD SATA",display:{size:14,type:"IPS",hz:60},os:"Windows 11 Home",battery:"54Wh",weight:1.6,ports:["USB-A","USB-C","HDMI 2.1","SD card reader"],wifi:"Wi-Fi 5",bt:"Bluetooth 5.0",psu:"65W",features:["Veb-kamera 720p HD"],stores:[{n:"Texnomart",p:3900000},{n:"OLX",p:3700000}]},
+
+  // HP
+  {id:50,brand:"HP",name:"Spectre x360 14",cpu:"Intel Core Ultra 7 155H",cpuKey:"Core Ultra 7",gpu:"Intel Arc",gpuKey:"Intel Arc",ram:32,ramTypeKey:"LPDDR5",ssd:1024,ssdKey:"NVMe PCIe 4.0",display:{size:14,type:"OLED",hz:120},os:"Windows 11 Home",battery:"66Wh",weight:1.57,ports:["USB-A","USB-C","Thunderbolt 4","HDMI 2.1"],wifi:"Wi-Fi 6E",bt:"Bluetooth 5.3",psu:"65W",features:["Backlit klaviatura","Barmoq izi sensori","IR kamera","TPM 2.0","Dolby Atmos"],stores:[{n:"Texnomart",p:13500000},{n:"MediaPark",p:13200000}]},
+  {id:51,brand:"HP",name:"OMEN 16",cpu:"AMD Ryzen 7 7745HX",cpuKey:"Ryzen 7 7000+",gpu:"NVIDIA RTX 4070",gpuKey:"RTX 4070",ram:16,ramTypeKey:"DDR5",ssd:1024,ssdKey:"NVMe PCIe 4.0",display:{size:16,type:"IPS",hz:165},os:"Windows 11 Home",battery:"83Wh",weight:2.29,ports:["USB-A","USB-C","Thunderbolt 4","HDMI 2.1","SD card reader","Ethernet"],wifi:"Wi-Fi 6E",bt:"Bluetooth 5.3",psu:"230W",features:["RGB klaviatura","Barmoq izi sensori","Veb-kamera 1080p FHD"],stores:[{n:"Texnomart",p:17500000},{n:"Uzum Market",p:17200000}]},
+  {id:52,brand:"HP",name:"Victus 15",cpu:"AMD Ryzen 5 7535HS",cpuKey:"Ryzen 5 7000+",gpu:"NVIDIA RTX 4050",gpuKey:"RTX 4050",ram:8,ramTypeKey:"DDR5",ssd:512,ssdKey:"NVMe PCIe 4.0",display:{size:15,type:"IPS",hz:144},os:"Windows 11 Home",battery:"70.9Wh",weight:2.29,ports:["USB-A","USB-C","HDMI 2.1","Ethernet"],wifi:"Wi-Fi 6",bt:"Bluetooth 5.0",psu:"135W",features:["Backlit klaviatura","Veb-kamera 720p HD"],stores:[{n:"Texnomart",p:8900000},{n:"MediaPark",p:8700000},{n:"Uzum Market",p:8500000}]},
+  {id:53,brand:"HP",name:"Pavilion 15",cpu:"Intel Core i5-1235U",cpuKey:"Core i5 12th-gen U",gpu:"Intel Iris Xe",gpuKey:"Intel Iris Xe",ram:8,ramTypeKey:"DDR4",ssd:256,ssdKey:"SSD SATA",display:{size:15,type:"IPS",hz:60},os:"Windows 11 Home",battery:"43Wh",weight:1.75,ports:["USB-A","USB-C","HDMI 2.1","SD card reader"],wifi:"Wi-Fi 5",bt:"Bluetooth 5.0",psu:"45W",features:["Barmoq izi sensori","Veb-kamera 720p HD"],stores:[{n:"Texnomart",p:3800000},{n:"Uzum Market",p:3650000},{n:"OLX",p:3500000}]},
+  {id:54,brand:"HP",name:"EliteBook 840 G10",cpu:"Intel Core Ultra 5 125U",cpuKey:"Core Ultra 5",gpu:"Intel Iris Xe",gpuKey:"Intel Iris Xe",ram:16,ramTypeKey:"DDR5",ssd:512,ssdKey:"NVMe PCIe 4.0",display:{size:14,type:"IPS",hz:60},os:"Windows 11 Pro",battery:"51Wh",weight:1.37,ports:["USB-A","USB-C","Thunderbolt 4","HDMI 2.1","Ethernet","SD card reader"],wifi:"Wi-Fi 6E",bt:"Bluetooth 5.3",psu:"65W",features:["Backlit klaviatura","Barmoq izi sensori","IR kamera","TPM 2.0"],stores:[{n:"Texnomart",p:9800000},{n:"Idea Store",p:9500000}]},
+
+  // MSI
+  {id:60,brand:"MSI",name:"Titan GT77 HX",cpu:"Intel Core i9-13980HX",cpuKey:"Core i9 13th-gen H",gpu:"NVIDIA RTX 4090",gpuKey:"RTX 4090",ram:64,ramTypeKey:"DDR5",ssd:2048,ssdKey:"NVMe PCIe 5.0",display:{size:17,type:"IPS",hz:144},os:"Windows 11 Pro",battery:"99.9Wh",weight:3.3,ports:["USB-A","USB-C","Thunderbolt 4","HDMI 2.1","SD card reader","Ethernet"],wifi:"Wi-Fi 6E",bt:"Bluetooth 5.3",psu:"280W",features:["RGB klaviatura","Veb-kamera 1080p FHD","TPM 2.0","Dolby Atmos"],stores:[{n:"Texnomart",p:55000000},{n:"Idea Store",p:54000000}]},
+  {id:61,brand:"MSI",name:"Stealth 16 AI Studio",cpu:"Intel Core Ultra 9 185H",cpuKey:"Core Ultra 9",gpu:"NVIDIA RTX 4070 Ti",gpuKey:"RTX 4070",ram:32,ramTypeKey:"DDR5",ssd:2048,ssdKey:"NVMe PCIe 5.0",display:{size:16,type:"OLED",hz:120},os:"Windows 11 Home",battery:"99.9Wh",weight:2.0,ports:["USB-A","USB-C","Thunderbolt 5","HDMI 2.1","SD card reader"],wifi:"Wi-Fi 7",bt:"Bluetooth 5.3",psu:"230W",features:["Backlit klaviatura","Barmoq izi sensori","Veb-kamera 1080p FHD","TPM 2.0"],stores:[{n:"Texnomart",p:31000000},{n:"OLX",p:30000000}]},
+  {id:62,brand:"MSI",name:"Prestige 14 AI+ Evo",cpu:"Intel Core Ultra 7 155H",cpuKey:"Core Ultra 7",gpu:"Intel Arc",gpuKey:"Intel Arc",ram:32,ramTypeKey:"LPDDR5",ssd:1024,ssdKey:"NVMe PCIe 4.0",display:{size:14,type:"OLED",hz:120},os:"Windows 11 Home",battery:"72Wh",weight:1.44,ports:["USB-A","USB-C","Thunderbolt 4","HDMI 2.1","SD card reader"],wifi:"Wi-Fi 6E",bt:"Bluetooth 5.3",psu:"100W",features:["Backlit klaviatura","Barmoq izi sensori","Veb-kamera 1080p FHD","TPM 2.0"],stores:[{n:"MediaPark",p:11500000},{n:"Texnomart",p:11800000}]},
+  {id:63,brand:"MSI",name:"GF63 Thin 12V",cpu:"Intel Core i5-12450H",cpuKey:"Core i5 12th-gen H",gpu:"NVIDIA RTX 4050",gpuKey:"RTX 4050",ram:8,ramTypeKey:"DDR4",ssd:512,ssdKey:"NVMe PCIe 3.0",display:{size:15,type:"IPS",hz:144},os:"Windows 11 Home",battery:"51Wh",weight:1.86,ports:["USB-A","USB-C","HDMI 2.1","Ethernet"],wifi:"Wi-Fi 6",bt:"Bluetooth 5.2",psu:"120W",features:["Backlit klaviatura","Veb-kamera 720p HD"],stores:[{n:"Texnomart",p:7800000},{n:"Uzum Market",p:7500000},{n:"OLX",p:7300000}]},
+
+  // Acer
+  {id:70,brand:"Acer",name:"Predator Helios 18",cpu:"Intel Core i9-13900HX",cpuKey:"Core i9 13th-gen H",gpu:"NVIDIA RTX 4080",gpuKey:"RTX 4080",ram:32,ramTypeKey:"DDR5",ssd:1024,ssdKey:"NVMe PCIe 4.0",display:{size:18,type:"IPS",hz:240},os:"Windows 11 Home",battery:"90Wh",weight:3.1,ports:["USB-A","USB-C","Thunderbolt 4","HDMI 2.1","SD card reader","Ethernet"],wifi:"Wi-Fi 6E",bt:"Bluetooth 5.2",psu:"330W",features:["RGB klaviatura","Veb-kamera 1080p FHD","Dolby Atmos"],stores:[{n:"Texnomart",p:38000000},{n:"MediaPark",p:37500000}]},
+  {id:71,brand:"Acer",name:"Swift Go 14 OLED",cpu:"Intel Core Ultra 5 125H",cpuKey:"Core Ultra 5",gpu:"Intel Arc",gpuKey:"Intel Arc",ram:16,ramTypeKey:"LPDDR5",ssd:512,ssdKey:"NVMe PCIe 4.0",display:{size:14,type:"OLED",hz:90},os:"Windows 11 Home",battery:"65Wh",weight:1.25,ports:["USB-A","USB-C","Thunderbolt 4","HDMI 2.1","SD card reader"],wifi:"Wi-Fi 6E",bt:"Bluetooth 5.3",psu:"65W",features:["Backlit klaviatura","Barmoq izi sensori","Veb-kamera 1080p FHD","TPM 2.0"],stores:[{n:"Texnomart",p:8600000},{n:"Uzum Market",p:8300000},{n:"OLX",p:8100000}]},
+  {id:72,brand:"Acer",name:"Aspire 5 A515",cpu:"AMD Ryzen 5 7530U",cpuKey:"Ryzen 5 7000+",gpu:"AMD Radeon",gpuKey:"AMD Radeon Vega",ram:8,ramTypeKey:"DDR4",ssd:256,ssdKey:"SSD SATA",display:{size:15,type:"IPS",hz:60},os:"Windows 11 Home",battery:"48Wh",weight:1.74,ports:["USB-A","USB-C","HDMI 2.1","Ethernet","SD card reader"],wifi:"Wi-Fi 5",bt:"Bluetooth 5.0",psu:"45W",features:["Veb-kamera 720p HD"],stores:[{n:"Texnomart",p:4200000},{n:"Uzum Market",p:3990000},{n:"OLX",p:3800000}]},
+  {id:73,brand:"Acer",name:"Nitro 16",cpu:"AMD Ryzen 7 7745HX",cpuKey:"Ryzen 7 7000+",gpu:"NVIDIA RTX 4060",gpuKey:"RTX 4060",ram:16,ramTypeKey:"DDR5",ssd:512,ssdKey:"NVMe PCIe 4.0",display:{size:16,type:"IPS",hz:165},os:"Windows 11 Home",battery:"90Wh",weight:2.5,ports:["USB-A","USB-C","HDMI 2.1","Ethernet"],wifi:"Wi-Fi 6",bt:"Bluetooth 5.0",psu:"180W",features:["RGB klaviatura","Veb-kamera 720p HD"],stores:[{n:"Texnomart",p:12200000},{n:"MediaPark",p:11900000},{n:"Uzum Market",p:11600000}]},
+  {id:74,brand:"Acer",name:"Chromebook Spin 714",cpu:"Intel Core i5-1235U",cpuKey:"Core i5 12th-gen U",gpu:"Intel Iris Xe",gpuKey:"Intel Iris Xe",ram:8,ramTypeKey:"LPDDR4x",ssd:256,ssdKey:"NVMe PCIe 3.0",display:{size:14,type:"IPS",hz:60},os:"ChromeOS",battery:"51Wh",weight:1.47,ports:["USB-A","USB-C","HDMI 2.1"],wifi:"Wi-Fi 6E",bt:"Bluetooth 5.2",psu:"65W",features:["Barmoq izi sensori","Veb-kamera 1080p FHD"],stores:[{n:"Texnomart",p:4500000},{n:"Uzum Market",p:4300000}]},
+
+  // Samsung
+  {id:80,brand:"Samsung",name:"Galaxy Book4 Ultra",cpu:"Intel Core Ultra 9 185H",cpuKey:"Core Ultra 9",gpu:"NVIDIA RTX 4070",gpuKey:"RTX 4070",ram:32,ramTypeKey:"LPDDR5X",ssd:1024,ssdKey:"NVMe PCIe 4.0",display:{size:16,type:"AMOLED",hz:120},os:"Windows 11 Home",battery:"76Wh",weight:1.86,ports:["USB-A","USB-C","Thunderbolt 4","HDMI 2.1","microSD slot"],wifi:"Wi-Fi 6E",bt:"Bluetooth 5.3",psu:"140W",features:["Backlit klaviatura","Barmoq izi sensori","Veb-kamera 1080p FHD","TPM 2.0","Dolby Atmos"],stores:[{n:"Texnomart",p:23500000},{n:"Uzum Market",p:23000000}]},
+  {id:81,brand:"Samsung",name:"Galaxy Book4 Pro 360",cpu:"Intel Core Ultra 7 155H",cpuKey:"Core Ultra 7",gpu:"Intel Arc",gpuKey:"Intel Arc",ram:16,ramTypeKey:"LPDDR5X",ssd:512,ssdKey:"NVMe PCIe 4.0",display:{size:16,type:"AMOLED",hz:120},os:"Windows 11 Home",battery:"76Wh",weight:1.67,ports:["USB-A","USB-C","Thunderbolt 4","HDMI 2.1","microSD slot"],wifi:"Wi-Fi 6E",bt:"Bluetooth 5.3",psu:"65W",features:["Backlit klaviatura","Barmoq izi sensori","IR kamera","TPM 2.0"],stores:[{n:"Texnomart",p:17800000},{n:"MediaPark",p:17400000}]},
+
+  // Huawei
+  {id:90,brand:"Huawei",name:"MateBook X Pro 2024",cpu:"Intel Core Ultra 7 155H",cpuKey:"Core Ultra 7",gpu:"Intel Arc",gpuKey:"Intel Arc",ram:32,ramTypeKey:"LPDDR5",ssd:1024,ssdKey:"NVMe PCIe 4.0",display:{size:14,type:"OLED",hz:120},os:"Windows 11 Home",battery:"70Wh",weight:1.26,ports:["USB-C","Thunderbolt 4"],wifi:"Wi-Fi 6E",bt:"Bluetooth 5.2",psu:"90W",features:["Backlit klaviatura","Barmoq izi sensori","Veb-kamera 720p HD","IR kamera"],stores:[{n:"Texnomart",p:17000000},{n:"Uzum Market",p:16700000}]},
+  {id:91,brand:"Huawei",name:"MateBook D 16",cpu:"Intel Core i5-12450H",cpuKey:"Core i5 12th-gen H",gpu:"Intel Iris Xe",gpuKey:"Intel Iris Xe",ram:16,ramTypeKey:"DDR4",ssd:512,ssdKey:"NVMe PCIe 3.0",display:{size:16,type:"IPS",hz:60},os:"Windows 11 Home",battery:"60Wh",weight:1.7,ports:["USB-A","USB-C","HDMI 2.1","Ethernet"],wifi:"Wi-Fi 6",bt:"Bluetooth 5.2",psu:"65W",features:["Barmoq izi sensori","Veb-kamera 1080p FHD"],stores:[{n:"Texnomart",p:7600000},{n:"Uzum Market",p:7400000}]},
+
+  // Xiaomi
+  {id:100,brand:"Xiaomi",name:"Mi Notebook Pro X 15",cpu:"Intel Core i7-12700H",cpuKey:"Core i7 12th-gen H",gpu:"NVIDIA RTX 3050 Ti",gpuKey:"RTX 3050 Ti",ram:16,ramTypeKey:"DDR5",ssd:512,ssdKey:"NVMe PCIe 3.0",display:{size:15,type:"OLED",hz:120},os:"Windows 11 Home",battery:"72Wh",weight:1.8,ports:["USB-A","USB-C","Thunderbolt 4","HDMI 2.1"],wifi:"Wi-Fi 6",bt:"Bluetooth 5.2",psu:"100W",features:["Backlit klaviatura","Barmoq izi sensori","Veb-kamera 1080p FHD"],stores:[{n:"Uzum Market",p:11200000},{n:"OLX",p:10800000}]},
+  {id:101,brand:"Xiaomi",name:"Book Pro 14 2024",cpu:"Intel Core Ultra 7 155H",cpuKey:"Core Ultra 7",gpu:"NVIDIA RTX 3050",gpuKey:"RTX 3050",ram:32,ramTypeKey:"LPDDR5",ssd:1024,ssdKey:"NVMe PCIe 4.0",display:{size:14,type:"OLED",hz:120},os:"Windows 11 Home",battery:"75Wh",weight:1.4,ports:["USB-A","USB-C","Thunderbolt 4","HDMI 2.1","SD card reader"],wifi:"Wi-Fi 6E",bt:"Bluetooth 5.3",psu:"65W",features:["Backlit klaviatura","Barmoq izi sensori","Veb-kamera 1080p FHD"],stores:[{n:"Uzum Market",p:13600000},{n:"OLX",p:13200000}]},
+
+  // Razer
+  {id:110,brand:"Razer",name:"Blade 16 2024",cpu:"Intel Core i9-14900HX",cpuKey:"Core i9 14th-gen HX",gpu:"NVIDIA RTX 4090",gpuKey:"RTX 4090",ram:32,ramTypeKey:"DDR5",ssd:2048,ssdKey:"NVMe PCIe 5.0",display:{size:16,type:"OLED",hz:240},os:"Windows 11 Home",battery:"95.2Wh",weight:2.17,ports:["USB-A","USB-C","Thunderbolt 5","HDMI 2.1","SD card reader"],wifi:"Wi-Fi 7",bt:"Bluetooth 5.4",psu:"330W",features:["RGB klaviatura","Barmoq izi sensori","Veb-kamera 1080p FHD","TPM 2.0","Dolby Atmos"],stores:[{n:"OLX",p:72000000},{n:"Idea Store",p:75000000}]},
+  {id:111,brand:"Razer",name:"Blade 14 2024",cpu:"AMD Ryzen 9 8945HS",cpuKey:"Ryzen 9 8000",gpu:"NVIDIA RTX 4070",gpuKey:"RTX 4070",ram:16,ramTypeKey:"LPDDR5X",ssd:1024,ssdKey:"NVMe PCIe 4.0",display:{size:14,type:"OLED",hz:240},os:"Windows 11 Home",battery:"68Wh",weight:1.7,ports:["USB-A","USB-C","Thunderbolt 4","HDMI 2.1","SD card reader"],wifi:"Wi-Fi 6E",bt:"Bluetooth 5.3",psu:"230W",features:["RGB klaviatura","Barmoq izi sensori","Veb-kamera 1080p FHD","TPM 2.0"],stores:[{n:"OLX",p:46000000},{n:"Idea Store",p:48000000}]},
+
+  // Microsoft Surface
+  {id:120,brand:"Microsoft",name:"Surface Laptop 5",cpu:"Intel Core i7-1265U",cpuKey:"Core i7 12th-gen U",gpu:"Intel Iris Xe",gpuKey:"Intel Iris Xe",ram:16,ramTypeKey:"LPDDR5",ssd:512,ssdKey:"NVMe PCIe 4.0",display:{size:13,type:"IPS",hz:60},os:"Windows 11 Home",battery:"47.4Wh",weight:1.29,ports:["USB-A","USB-C","Thunderbolt 4"],wifi:"Wi-Fi 6",bt:"Bluetooth 5.1",psu:"65W",features:["Barmoq izi sensori","Veb-kamera 720p HD","TPM 2.0"],stores:[{n:"Texnomart",p:12500000},{n:"OLX",p:12000000}]},
+  {id:121,brand:"Microsoft",name:"Surface Pro 9",cpu:"Intel Core i7-1255U",cpuKey:"Core i7 12th-gen U",gpu:"Intel Iris Xe",gpuKey:"Intel Iris Xe",ram:16,ramTypeKey:"LPDDR5",ssd:256,ssdKey:"NVMe PCIe 4.0",display:{size:13,type:"IPS",hz:120},os:"Windows 11 Home",battery:"47.4Wh",weight:0.88,ports:["USB-C","Thunderbolt 4"],wifi:"Wi-Fi 6E",bt:"Bluetooth 5.1",psu:"65W",features:["Barmoq izi sensori","IR kamera","TPM 2.0"],stores:[{n:"Texnomart",p:14000000},{n:"Uzum Market",p:13500000}]},
+
+  // LG Gram
+  {id:130,brand:"LG",name:"Gram 14 2024",cpu:"Intel Core Ultra 7 155H",cpuKey:"Core Ultra 7",gpu:"Intel Arc",gpuKey:"Intel Arc",ram:16,ramTypeKey:"LPDDR5",ssd:512,ssdKey:"NVMe PCIe 4.0",display:{size:14,type:"IPS",hz:60},os:"Windows 11 Home",battery:"72Wh",weight:0.99,ports:["USB-A","USB-C","Thunderbolt 4","HDMI 2.1","SD card reader"],wifi:"Wi-Fi 6E",bt:"Bluetooth 5.3",psu:"65W",features:["Backlit klaviatura","Barmoq izi sensori","Veb-kamera 1080p FHD"],stores:[{n:"Texnomart",p:14500000},{n:"Uzum Market",p:14200000}]},
+  {id:131,brand:"LG",name:"Gram 16 2024",cpu:"Intel Core Ultra 7 155H",cpuKey:"Core Ultra 7",gpu:"Intel Arc",gpuKey:"Intel Arc",ram:32,ramTypeKey:"LPDDR5",ssd:1024,ssdKey:"NVMe PCIe 4.0",display:{size:16,type:"IPS",hz:120},os:"Windows 11 Home",battery:"80Wh",weight:1.19,ports:["USB-A","USB-C","Thunderbolt 4","HDMI 2.1","SD card reader","Ethernet"],wifi:"Wi-Fi 6E",bt:"Bluetooth 5.3",psu:"65W",features:["Backlit klaviatura","Barmoq izi sensori","Veb-kamera 1080p FHD","TPM 2.0"],stores:[{n:"Texnomart",p:17000000},{n:"MediaPark",p:16700000}]},
+
+  // Honor
+  {id:140,brand:"Honor",name:"MagicBook X 14 2024",cpu:"Intel Core i5-13420H",cpuKey:"Core i5 13th-gen H",gpu:"Intel Iris Xe",gpuKey:"Intel Iris Xe",ram:16,ramTypeKey:"DDR5",ssd:512,ssdKey:"NVMe PCIe 4.0",display:{size:14,type:"IPS",hz:60},os:"Windows 11 Home",battery:"70Wh",weight:1.49,ports:["USB-A","USB-C","HDMI 2.1"],wifi:"Wi-Fi 6",bt:"Bluetooth 5.1",psu:"65W",features:["Barmoq izi sensori","Veb-kamera 720p HD"],stores:[{n:"Uzum Market",p:5800000},{n:"OLX",p:5500000}]},
+
+  // Gigabyte
+  {id:150,brand:"Gigabyte",name:"Aero 16 OLED 2024",cpu:"Intel Core i9-13980HX",cpuKey:"Core i9 13th-gen H",gpu:"NVIDIA RTX 4090",gpuKey:"RTX 4090",ram:32,ramTypeKey:"DDR5",ssd:2048,ssdKey:"NVMe PCIe 4.0",display:{size:16,type:"OLED",hz:60},os:"Windows 11 Pro",battery:"99Wh",weight:2.3,ports:["USB-A","USB-C","Thunderbolt 4","HDMI 2.1","SD card reader","Ethernet"],wifi:"Wi-Fi 6E",bt:"Bluetooth 5.3",psu:"230W",features:["RGB klaviatura","Barmoq izi sensori","Veb-kamera 1080p FHD","TPM 2.0","Dolby Atmos"],stores:[{n:"Texnomart",p:42000000},{n:"OLX",p:40000000}]},
+
+  // Linux
+  {id:160,brand:"Dell",name:"XPS 13 Developer Edition",cpu:"Intel Core Ultra 5 125H",cpuKey:"Core Ultra 5",gpu:"Intel Arc",gpuKey:"Intel Arc",ram:16,ramTypeKey:"LPDDR5",ssd:512,ssdKey:"NVMe PCIe 4.0",display:{size:13,type:"OLED",hz:120},os:"Linux Ubuntu",battery:"55Wh",weight:1.27,ports:["USB-C","Thunderbolt 4"],wifi:"Wi-Fi 6E",bt:"Bluetooth 5.3",psu:"60W",features:["Backlit klaviatura","Barmoq izi sensori","IR kamera"],stores:[{n:"OLX",p:13500000},{n:"Uzum Market",p:13200000}]},
+];
+
+/* ════════════════════════════════════════════════════════════
+   FILTER OPTIONS — Hujjatdan to'liq ro'yxat
+════════════════════════════════════════════════════════════ */
+
+// Brendlar
+const BRANDS=["Apple","ASUS","Lenovo","HP","Dell","Acer","MSI","Huawei","Samsung","Razer","Microsoft","Gigabyte","Honor","LG","Toshiba","Xiaomi","Other"];
+
+// Ekran o'lchami
+const DSIZE=[11,12,13,14,15,16,17,18];
+
+// Ekran turi
+const DTYPE=["IPS","TN","VA","OLED","AMOLED","Mini LED","Retina","Liquid Retina","Liquid Retina XDR"];
+
+// Yangilanish tezligi
+const DHZ=[60,75,90,120,144,165,180,240,300,360];
+
+// CPU — Intel avlodlar bo'yicha (past→yuqori)
+const CPU_INTEL=[
+  "Celeron N-series",
+  "Pentium Gold",
+  "Core i3 10th-gen U",
+  "Core i3 11th-gen U/H",
+  "Core i3 12th-gen U",
+  "Core i3 13th-gen U",
+  "Core i5 10th-gen U",
+  "Core i5 12th-gen U",
+  "Core i5 12th-gen H",
+  "Core i5 13th-gen H",
+  "Core i5 13th-gen HX",
+  "Core i7 11th-gen U",
+  "Core i7 12th-gen U",
+  "Core i7 12th-gen H",
+  "Core i7 13th-gen H",
+  "Core i7 13th-gen HX",
+  "Core i9 12th-gen H",
+  "Core i9 13th-gen H",
+  "Core i9 14th-gen HX",
+  "Core Ultra 5",
+  "Core Ultra 7",
+  "Core Ultra 9",
+  "Xeon W"
+];
+
+// CPU — AMD seriyalar bo'yicha (past→yuqori)
+const CPU_AMD=[
+  "Athlon Gold",
+  "Ryzen 3 3000",
+  "Ryzen 3 5000",
+  "Ryzen 5 4000",
+  "Ryzen 5 5000",
+  "Ryzen 5 7000+",
+  "Ryzen 7 4000",
+  "Ryzen 7 5000",
+  "Ryzen 7 6000",
+  "Ryzen 7 7000+",
+  "Ryzen 7 8000",
+  "Ryzen 9 5000",
+  "Ryzen 9 6000",
+  "Ryzen 9 7000+",
+  "Ryzen 9 8000",
+  "Threadripper"
+];
+
+// CPU — Apple Silicon (past→yuqori)
+const CPU_APPLE=[
+  "M1","M1 Pro","M1 Max","M1 Ultra",
+  "M2","M2 Pro","M2 Max","M2 Ultra",
+  "M3","M3 Pro","M3 Max","M3 Ultra",
+  "M4","M4 Pro","M4 Max","M4 Ultra"
+];
+
+// GPU — integratsiyalangan
+const GPU_INT=[
+  // Intel
+  "Intel UHD 600","Intel UHD 620","Intel UHD 630","Intel UHD Graphics",
+  "Intel Iris Xe","Intel Arc A350M","Intel Arc A370M",
+  "Intel Arc A550M","Intel Arc A730M","Intel Arc A770M",
+  // AMD
+  "AMD Radeon Vega 3","AMD Radeon Vega 6","AMD Radeon Vega 7","AMD Radeon Vega 8",
+  "AMD Radeon 610M","AMD Radeon 680M","AMD Radeon 760M","AMD Radeon 780M","AMD Radeon 890M",
+  // Apple
+  "Apple GPU 7-core","Apple GPU 8-core","Apple GPU 10-core",
+  "Apple GPU 16-core","Apple GPU 18-core","Apple GPU 20-core",
+  "Apple GPU 30-core","Apple GPU 38-core","Apple GPU 40-core"
+];
+
+// GPU — NVIDIA dedicated (GTX → RTX 20 → RTX 30 → RTX 40)
+const GPU_NV=[
+  // GTX seriyasi
+  "GTX 1050","GTX 1050 Ti","GTX 1060","GTX 1650","GTX 1650 Ti",
+  "GTX 1660","GTX 1660 Ti","GTX 1660 Super",
+  // RTX 20-seriyasi
+  "RTX 2050","RTX 2060","RTX 2060 Super",
+  "RTX 2070","RTX 2070 Super","RTX 2080","RTX 2080 Ti",
+  // RTX 30-seriyasi
+  "RTX 3050","RTX 3050 Ti",
+  "RTX 3060","RTX 3060 Ti","RTX 3070","RTX 3070 Ti",
+  "RTX 3080","RTX 3080 Ti",
+  // RTX 40-seriyasi
+  "RTX 4050","RTX 4060","RTX 4060 Ti",
+  "RTX 4070","RTX 4070 Ti","RTX 4080","RTX 4090",
+  // Professional
+  "Quadro RTX A2000","Quadro RTX A3000","Quadro RTX A4500","Quadro RTX A5500"
+];
+
+// GPU — AMD dedicated
+const GPU_AMD=[
+  // RX 5000-seriyasi
+  "RX 5300M","RX 5500M","RX 5600M","RX 5700M",
+  // RX 6000-seriyasi
+  "RX 6500M","RX 6600M","RX 6650M","RX 6700M","RX 6800M",
+  // RX 7000-seriyasi
+  "RX 7600M","RX 7600S","RX 7700S","RX 7800S","RX 7900M"
+];
+
+// RAM (minimal GB)
+const RAM_MIN=[4,6,8,12,16,24,32,48,64,96,128];
+
+// RAM turi
+const RAM_TYPES=[
+  "DDR4","LPDDR4x","LPDDR5","LPDDR5X","DDR5","Unified Memory"
+];
+
+// SSD (minimal GB)
+const SSD_MIN=[128,256,512,1024,2048,4096];
+
+// SSD interfeysi
+const SSD_TYPES=[
+  "SSD SATA","NVMe PCIe 3.0","NVMe PCIe 4.0","NVMe PCIe 5.0","Apple SSD"
+];
+
+// Operatsion tizim
+const OS_OPTS=[
+  "Windows 10","Windows 11 Home","Windows 11 Pro",
+  "macOS Ventura","macOS Sonoma","macOS Sequoia",
+  "ChromeOS","Linux Ubuntu","Linux Debian","Linux Fedora",
+  "FreeDOS","No OS"
+];
+
+// Portlar
+const PORTS_OPTS=[
+  "USB-A (3.0/3.2)","USB-C","Thunderbolt 3","Thunderbolt 4","Thunderbolt 5",
+  "HDMI 2.1","DisplayPort","VGA",
+  "SD card reader","microSD slot","Ethernet (RJ45)"
+];
+
+// Wi-Fi
+const WIFI_OPTS=["Wi-Fi 5 (802.11ac)","Wi-Fi 6 (802.11ax)","Wi-Fi 6E","Wi-Fi 7"];
+
+// Bluetooth
+const BT_OPTS=["Bluetooth 5.0","Bluetooth 5.1","Bluetooth 5.2","Bluetooth 5.3","Bluetooth 5.4"];
+
+// Mobil internet
+const MOB_OPTS=["4G LTE","5G"];
+
+// Quvvat adapteri
+const PSU_OPTS=[
+  "45W","65W","90W","100W USB-C","140W","180W","230W","280W+","330W"
+];
+
+// Klaviatura / Xavfsizlik
+const FEAT_KBD=[
+  "Backlit klaviatura","RGB klaviatura","Mexanik klaviatura",
+  "Barmoq izi sensori","IR kamera","TPM 2.0"
+];
+
+// Kamera / Audio
+const FEAT_CAM=[
+  "Veb-kamera 720p HD","Veb-kamera 1080p FHD",
+  "Kvartetli audio (Quad speakers)","Dolby Atmos"
+];
+
+// Do'konlar
+const STORES=["Texnomart","MediaPark","Idea Store","iStore UZ","OLX","Uzum Market"];
+const S_COLOR={Texnomart:"#e60026",MediaPark:"#0052cc","Idea Store":"#6d28d9","iStore UZ":"#333",OLX:"#3d7ab5","Uzum Market":"#6366f1"};
+const S_SLUG ={Texnomart:"tx",MediaPark:"mp","Idea Store":"id","iStore UZ":"is",OLX:"ol","Uzum Market":"uz"};
+
+/* ════════════════════════════════════════════════════════════
+   FILTER STATE
+════════════════════════════════════════════════════════════ */
+const F={
+  brands:[],dsizes:[],dtypes:[],dhz:[],
+  cpuIntel:[],cpuAmd:[],cpuApple:[],
+  gpuInt:[],gpuNv:[],gpuAmd:[],
+  minRam:0,ramTypes:[],minSsd:0,ssdTypes:[],
+  os:[],ports:[],wifi:[],bt:[],mobile:[],psu:[],
+  featKbd:[],featCam:[],stores:[],
+  minPrice:0,maxPrice:80000000
+};
+let sortBy="cheapest",searched=false;
+
+/* ════════════════════════════════════════════════════════════
+   HELPERS
+════════════════════════════════════════════════════════════ */
+const fmtUZS=n=>n.toLocaleString("uz-UZ")+" UZS";
+const ssdLbl=n=>n>=1024?`${n/1024}TB`:`${n}GB`;
+
+function countActive(){
+  return F.brands.length+F.dsizes.length+F.dtypes.length+F.dhz.length+
+    F.cpuIntel.length+F.cpuAmd.length+F.cpuApple.length+
+    F.gpuInt.length+F.gpuNv.length+F.gpuAmd.length+
+    (F.minRam>0?1:0)+F.ramTypes.length+(F.minSsd>0?1:0)+F.ssdTypes.length+
+    F.os.length+F.ports.length+F.wifi.length+F.bt.length+F.mobile.length+
+    F.psu.length+F.featKbd.length+F.featCam.length+F.stores.length+
+    (F.minPrice>0?1:0)+(F.maxPrice<80000000?1:0);
+}
+
+function tog(arr,v){const i=arr.indexOf(v);if(i>-1)arr.splice(i,1);else arr.push(v);}
+
+/* ════════════════════════════════════════════════════════════
+   BUILD CHIPS
+════════════════════════════════════════════════════════════ */
+function chips(id,items,field,excNum,lFn){
+  const el=document.getElementById(id);if(!el)return;
+  el.innerHTML="";
+  items.forEach(v=>{
+    const arr=F[field];
+    const active=excNum?(arr===v):arr.includes(v);
+    const c=document.createElement("div");
+    c.className="chip"+(active?" on":"");
+    c.textContent=lFn?lFn(v):v;
+    c.onclick=()=>{
+      if(excNum)F[field]=F[field]===v?0:v;
+      else tog(F[field],v);
+      render();updateUI();
+    };
+    el.appendChild(c);
+  });
+}
+
+function storeChips(){
+  const el=document.getElementById("c-stores");el.innerHTML="";
+  STORES.forEach(s=>{
+    const a=F.stores.includes(s);
+    const c=document.createElement("div");
+    c.className="chip"+(a?" s-"+(S_SLUG[s]||""):"");
+    c.textContent=s;
+    c.onclick=()=>{tog(F.stores,s);render();updateUI();};
+    el.appendChild(c);
+  });
+}
+
+function render(){
+  // CPU Intel chips — avlod bo'yicha moslik
+  chips("c-cpu-intel",CPU_INTEL,"cpuIntel",false);
+  chips("c-cpu-amd",  CPU_AMD,  "cpuAmd",  false);
+  chips("c-cpu-apple",CPU_APPLE,"cpuApple",false);
+  chips("c-brand",    BRANDS,   "brands",  false);
+  chips("c-dsize",    DSIZE,    "dsizes",  false,v=>v+'"');
+  chips("c-dtype",    DTYPE,    "dtypes",  false);
+  chips("c-dhz",      DHZ,      "dhz",     false,v=>v+" Hz");
+  chips("c-gpu-int",  GPU_INT,  "gpuInt",  false);
+  chips("c-gpu-nv",   GPU_NV,   "gpuNv",   false);
+  chips("c-gpu-amd",  GPU_AMD,  "gpuAmd",  false);
+  chips("c-ram",      RAM_MIN,  "minRam",  true, v=>v+"GB"+(v>=64?"+":""));
+  chips("c-ramtype",  RAM_TYPES,"ramTypes",false);
+  chips("c-ssd",      SSD_MIN,  "minSsd",  true, ssdLbl);
+  chips("c-ssdtype",  SSD_TYPES,"ssdTypes",false);
+  chips("c-os",       OS_OPTS,  "os",      false);
+  chips("c-ports",    PORTS_OPTS,"ports",  false);
+  chips("c-wifi",     WIFI_OPTS,"wifi",    false);
+  chips("c-bt",       BT_OPTS,  "bt",      false);
+  chips("c-mobile",   MOB_OPTS, "mobile",  false);
+  chips("c-psu",      PSU_OPTS, "psu",     false);
+  chips("c-feat-kbd", FEAT_KBD, "featKbd", false);
+  chips("c-feat-cam", FEAT_CAM, "featCam", false);
+  storeChips();
+}
+
+function updateUI(){
+  const n=countActive();
+  const b=document.getElementById("f-badge");
+  b.textContent=n;b.style.display=n?"":"none";
+  ["clear-top","clear-bot"].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el)el.style.display=n?"":"none";
+  });
+}
+
+/* ════════════════════════════════════════════════════════════
+   CLEAR
+════════════════════════════════════════════════════════════ */
+function clearAll(){
+  Object.keys(F).forEach(k=>{
+    if(Array.isArray(F[k]))F[k]=[];
+    else if(k==="minPrice"||k==="minRam"||k==="minSsd")F[k]=0;
+    else if(k==="maxPrice")F[k]=80000000;
+  });
+  document.getElementById("rng-min").value=0;
+  document.getElementById("rng-max").value=80000000;
+  document.getElementById("pmin-lbl").textContent="0 UZS";
+  document.getElementById("pmax-lbl").textContent="Cheksiz";
+  searched=false;render();updateUI();show("welcome");
+}
+
+/* ════════════════════════════════════════════════════════════
+   FILTER LOGIC
+════════════════════════════════════════════════════════════ */
+function matchCpu(l){
+  // Intel avlod moslik
+  if(F.cpuIntel.length){
+    const k=l.cpuKey||"";
+    const m=F.cpuIntel.some(sel=>{
+      if(sel==="Celeron N-series") return k.includes("Celeron")||l.cpu.includes("Celeron");
+      if(sel==="Pentium Gold")     return k.includes("Pentium")||l.cpu.includes("Pentium");
+      if(sel==="Athlon Gold")      return k.includes("Athlon")||l.cpu.includes("Athlon");
+      if(sel==="Xeon W")           return k.includes("Xeon")||l.cpu.includes("Xeon");
+      return k.includes(sel)||k===sel;
+    });
+    if(!m&&F.cpuAmd.length===0&&F.cpuApple.length===0) return false;
+    if(m) return true;
+  }
+  if(F.cpuAmd.length){
+    const k=l.cpuKey||"";
+    const m=F.cpuAmd.some(sel=>k.includes(sel)||k===sel);
+    if(m) return true;
+    if(F.cpuApple.length===0&&F.cpuIntel.length===0) return false;
+  }
+  if(F.cpuApple.length){
+    const k=l.cpuKey||"";
+    const m=F.cpuApple.some(sel=>k===sel||k.includes(sel));
+    if(m) return true;
+    return false;
+  }
+  return true;
+}
+
+function matchGpu(l){
+  const g=l.gpu||"";const k=l.gpuKey||"";
+  if(F.gpuInt.length){
+    const m=F.gpuInt.some(opt=>{
+      if(opt==="Intel UHD")     return g.includes("UHD")||k.includes("UHD");
+      if(opt==="Intel Iris Xe") return g.includes("Iris Xe")||k.includes("Iris Xe");
+      if(opt==="Intel Arc")     return g.includes("Arc")||k.includes("Arc");
+      if(opt==="Apple GPU")     return g.includes("Apple GPU")||k.includes("Apple GPU");
+      if(opt==="AMD Radeon Vega")    return g.includes("Vega")||k.includes("Vega");
+      if(opt==="AMD Radeon 600/700") return (g.includes("Radeon 6")||g.includes("Radeon 7"))&&!g.includes("RX");
+      return false;
+    });
+    if(m) return true;
+    if(F.gpuNv.length===0&&F.gpuAmd.length===0) return false;
+  }
+  if(F.gpuNv.length){
+    const m=F.gpuNv.some(opt=>{
+      if(opt==="Quadro RTX") return g.includes("Quadro")||g.includes("RTX A");
+      return k.includes(opt)||g.includes(opt);
+    });
+    if(m) return true;
+    if(F.gpuAmd.length===0&&F.gpuInt.length===0) return false;
+  }
+  if(F.gpuAmd.length){
+    const m=F.gpuAmd.some(opt=>k.includes(opt)||g.includes(opt));
+    if(m) return true;
+    return false;
+  }
+  return true;
+}
+
+function filterDB(){
+  return DB.filter(l=>{
+    if(F.brands.length&&!F.brands.includes(l.brand)) return false;
+    if(F.dsizes.length&&!F.dsizes.includes(l.display.size)) return false;
+    if(F.dtypes.length&&!F.dtypes.some(t=>l.display.type.includes(t))) return false;
+    if(F.dhz.length&&!F.dhz.includes(l.display.hz)) return false;
+    if((F.cpuIntel.length||F.cpuAmd.length||F.cpuApple.length)&&!matchCpu(l)) return false;
+    if((F.gpuInt.length||F.gpuNv.length||F.gpuAmd.length)&&!matchGpu(l)) return false;
+    if(F.minRam>0&&l.ram<F.minRam) return false;
+    if(F.ramTypes.length&&!F.ramTypes.some(t=>(l.ramTypeKey||"").includes(t.split(" ")[0])||l.ramTypeKey===t)) return false;
+    if(F.minSsd>0&&l.ssd<F.minSsd) return false;
+    if(F.ssdTypes.length&&!F.ssdTypes.some(t=>(l.ssdKey||"").includes(t.split(" ")[0])||(l.ssdKey||"")=== t)) return false;
+    if(F.os.length&&!F.os.some(o=>{
+      const lo=l.os.toLowerCase(),oo=o.toLowerCase();
+      if(oo.includes("windows 11 home")) return lo==="windows 11 home";
+      if(oo.includes("windows 11 pro"))  return lo==="windows 11 pro";
+      if(oo.includes("windows 10"))      return lo.includes("windows 10");
+      if(oo.includes("macos")) return lo.includes("macos");
+      if(oo.includes("chromeos")) return lo.includes("chrome");
+      if(oo.includes("linux"))  return lo.includes("linux");
+      if(oo.includes("freedos")) return lo.includes("freedos");
+      if(oo.includes("no os"))  return lo.includes("no os");
+      return lo.includes(oo.split(" ")[0]);
+    })) return false;
+    if(F.ports.length&&!F.ports.some(p=>(l.ports||[]).some(lp=>lp.toLowerCase().includes(p.split(" ")[0].toLowerCase())))) return false;
+    if(F.wifi.length&&!F.wifi.some(w=>(l.wifi||"").includes(w.split(" ")[0].replace("Wi-Fi","Wi-Fi")))) return false;
+    if(F.bt.length&&!F.bt.some(b=>(l.bt||"").includes(b.split(" ").slice(-1)[0]))) return false;
+    if(F.mobile.length&&!F.mobile.some(m=>(l.features||[]).includes(m))) return false;
+    if(F.psu.length&&!F.psu.some(p=>(l.psu||"").includes(p.replace("W+","W").split(" ")[0]))) return false;
+    if(F.featKbd.length&&!F.featKbd.every(ft=>(l.features||[]).some(lf=>lf.includes(ft.split(" ")[0])))) return false;
+    if(F.featCam.length&&!F.featCam.every(ft=>(l.features||[]).some(lf=>lf.includes(ft.split(" ")[0])))) return false;
+    if(F.stores.length&&!F.stores.some(s=>(l.stores||[]).find(x=>x.n===s))) return false;
+    const minP=Math.min(...l.stores.map(s=>s.p));
+    if(minP<F.minPrice||minP>F.maxPrice) return false;
+    return true;
+  });
+}
+
+function sortList(list){
+  const r=[...list];
+  if(sortBy==="cheapest")  r.sort((a,b)=>Math.min(...a.stores.map(s=>s.p))-Math.min(...b.stores.map(s=>s.p)));
+  if(sortBy==="powerful")  r.sort((a,b)=>b.ram-a.ram);
+  if(sortBy==="bestvalue") r.sort((a,b)=>(b.ram*b.ssd)/Math.min(...b.stores.map(s=>s.p))-(a.ram*a.ssd)/Math.min(...a.stores.map(s=>s.p)));
+  if(sortBy==="lightest")  r.sort((a,b)=>a.weight-b.weight);
+  return r;
+}
+
+/* ════════════════════════════════════════════════════════════
+   RENDER CARDS
+════════════════════════════════════════════════════════════ */
+function mkCard(l){
+  const sts=[...l.stores].sort((a,b)=>a.p-b.p);
+  const minP=sts[0].p;
+  const isApple=l.brand==="Apple";
+  const stH=sts.map((s,i)=>`
+    <div class="st-row${i===0?" best":""}">
+      <div class="st-left">
+        <span class="st-dot" style="background:${S_COLOR[s.n]||"#888"}"></span>
+        <span class="st-name">${s.n}</span>
+        ${i===0?'<span class="best-tag">eng arzon</span>':""}
+      </div>
+      <div class="st-right">
+        <span class="st-price${i===0?" b":""}">${fmtUZS(s.p)}</span>
+        <a href="#" class="st-link"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+      </div>
+    </div>`).join("");
+  const feats=(l.features||[]).slice(0,3).map(f=>`<span class="feat-tag">${f}</span>`).join("");
+  const specHTML=(icon,lbl,val)=>`
+    <div class="sp">
+      <svg class="sp-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">${icon}</svg>
+      <div><div class="sp-k">${lbl}</div><div class="sp-v">${val}</div></div>
+    </div>`;
+  return`<div class="card">
+    <div class="card-stripe" style="background:${isApple?"linear-gradient(90deg,#555,#999)":"linear-gradient(90deg,#2563eb,#059669)"}"></div>
+    <div class="card-body">
+      <div class="card-top">
+        <div>
+          <div class="card-brand${isApple?" apple":""}">${l.brand}</div>
+          <div class="card-name">${l.name}</div>
+        </div>
+        <div class="card-price-box">
+          <div class="card-plbl">eng arzon</div>
+          <div class="card-price">${fmtUZS(minP)}</div>
+        </div>
+      </div>
+      <div class="specs">
+        ${specHTML('<rect x="7" y="7" width="10" height="10" rx="1"/><path d="M9 7V4M12 7V4M15 7V4M9 17v3M12 17v3M15 17v3M7 9H4M7 12H4M7 15H4M17 9h3M17 12h3M17 15h3"/>',"CPU",l.cpu)}
+        ${specHTML('<rect x="2" y="7" width="20" height="13" rx="2"/><path d="M6 7V4M18 7V4"/><circle cx="8" cy="13.5" r="1.5"/><circle cx="13" cy="13.5" r="1.5"/>',"GPU",l.gpu)}
+        ${specHTML('<rect x="3" y="8" width="18" height="8" rx="1"/><path d="M7 8V6M10 8V6M14 8V6M17 8V6M7 16v2M10 16v2M14 16v2M17 16v2"/>',"RAM",`${l.ram}GB ${l.ramTypeKey}`)}
+        ${specHTML('<ellipse cx="12" cy="8" rx="9" ry="3"/><path d="M3 8v8c0 1.66 4.03 3 9 3s9-1.34 9-3V8"/><path d="M3 12c0 1.66 4.03 3 9 3s9-1.34 9-3"/>',"SSD",`${ssdLbl(l.ssd)} ${l.ssdKey}`)}
+        ${specHTML('<rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/>',"Ekran",`${l.display.size}" ${l.display.type} ${l.display.hz}Hz`)}
+        ${specHTML('<rect x="3" y="3" width="18" height="18" rx="3"/><path d="M9 9h6M9 12h6M9 15h4"/>',"OS",l.os)}
+        ${specHTML('<rect x="2" y="7" width="18" height="10" rx="2"/><path d="M22 11v2"/><path d="M6 11h5M11 8v6"/>',"Batareya",l.battery)}
+        ${specHTML('<circle cx="12" cy="8" r="4"/><path d="M5 20l2-8h10l2 8"/>',"Vazn",`${l.weight} kg`)}
+      </div>
+      ${feats?`<div class="feat-row">${feats}</div>`:""}
+      <div class="stores-lbl">Do'konlar &amp; narxlar</div>
+      <div class="stores-list">${stH}</div>
+    </div>
+  </div>`;
+}
+
+/* ════════════════════════════════════════════════════════════
+   STATE
+════════════════════════════════════════════════════════════ */
+function show(s){
+  ["welcome","empty","results"].forEach(id=>{
+    const el=document.getElementById("st-"+id);
+    if(el)el.style.display=s===id?"":"none";
+  });
+}
+
+/* ════════════════════════════════════════════════════════════
+   SEARCH
+════════════════════════════════════════════════════════════ */
+function doSearch(){
+  searched=true;
+  const res=sortList(filterDB());
+  if(!res.length){show("empty");return;}
+  document.getElementById("res-count").textContent=res.length;
+  document.getElementById("res-total").textContent=DB.length;
+  document.getElementById("cards-grid").innerHTML=res.map(mkCard).join("");
+  show("results");
+}
+
+function setSort(v){
+  sortBy=v;
+  document.querySelectorAll(".sort-chip").forEach(el=>el.classList.toggle("on",el.dataset.s===v));
+  if(searched)doSearch();
+}
+
+/* ════════════════════════════════════════════════════════════
+   PRICE SLIDERS
+════════════════════════════════════════════════════════════ */
+document.getElementById("rng-min").addEventListener("input",function(){
+  F.minPrice=+this.value;
+  if(F.minPrice>F.maxPrice){F.maxPrice=F.minPrice;document.getElementById("rng-max").value=F.maxPrice;}
+  document.getElementById("pmin-lbl").textContent=fmtUZS(F.minPrice);
+  updateUI();
+});
+document.getElementById("rng-max").addEventListener("input",function(){
+  F.maxPrice=+this.value;
+  if(F.maxPrice<F.minPrice){F.minPrice=F.maxPrice;document.getElementById("rng-min").value=F.minPrice;}
+  document.getElementById("pmax-lbl").textContent=F.maxPrice>=80000000?"Cheksiz":fmtUZS(F.maxPrice);
+  updateUI();
+});
+
+/* ════════════════════════════════════════════════════════════
+   DARK MODE
+════════════════════════════════════════════════════════════ */
+document.getElementById("dark-btn").addEventListener("click",function(){
+  document.body.classList.toggle("dark");
+  this.textContent=document.body.classList.contains("dark")?"☀️":"🌙";
+});
+
+/* ════════════════════════════════════════════════════════════
+   EVENTS
+════════════════════════════════════════════════════════════ */
+document.getElementById("btn-search").addEventListener("click",doSearch);
+document.getElementById("clear-top").addEventListener("click",clearAll);
+document.getElementById("clear-bot").addEventListener("click",clearAll);
+
+/* ════════════════════════════════════════════════════════════
+   FOOTER + INIT
+════════════════════════════════════════════════════════════ */
+(function init(){
+  const win=DB.filter(l=>l.os.includes("Windows")).length;
+  const mac=DB.filter(l=>l.os.includes("macOS")).length;
+  const lnx=DB.filter(l=>l.os.toLowerCase().includes("linux")).length;
+  document.getElementById("ft-stats").innerHTML=
+    `<span>🪟 ${win} Windows</span><span>🍎 ${mac} macOS</span><span>🐧 ${lnx} Linux</span><span>🏪 6 do'kon</span><span>💻 ${DB.length} ta model</span>`;
+  document.getElementById("nav-count").textContent=`${DB.length} ta model mavjud`;
+  document.getElementById("st-total").textContent=DB.length;
+  render();show("welcome");
+})();
+</script>
+<!-- ═══════════════ AI YORDAMCHI MODAL ═══════════════ -->
+<div id="ai-modal">
+  <div id="ai-box">
+    <!-- Header -->
+    <div class="ai-head">
+      <div class="ai-avatar">🤖</div>
+      <div class="ai-head-info">
+        <div class="ai-head-name">AI Yordamchi</div>
+        <div class="ai-head-sub">onlylap.uz · <span id="ai-status-text">online</span></div>
+      </div>
+      <div class="ai-status" id="ai-status-dot"></div>
+      <button class="ai-close" id="ai-settings-btn" title="Sozlamalar" style="margin-right:4px">⚙️</button>
+      <button class="ai-close" id="ai-close-btn">✕</button>
+    </div>
+    <!-- API key settings (shown when no key) -->
+    <div id="ai-key-panel" style="display:none;padding:20px;display:none;flex-direction:column;gap:12px;background:var(--surf2);border-bottom:1px solid var(--border)">
+      <div style="font-weight:700;font-size:13px">🔑 Anthropic API kalitini kiriting</div>
+      <div style="font-size:11.5px;color:var(--muted);line-height:1.6">AI yordamchi ishlashi uchun Anthropic API kaliti kerak. Kalit <b>console.anthropic.com</b> saytidan olinadi. Kalit faqat sizning brauzeringizda saqlanadi.</div>
+      <input type="password" id="api-key-input" placeholder="sk-ant-..." style="padding:9px 12px;border-radius:10px;border:1.5px solid var(--border);background:var(--surf);color:var(--txt);font-size:13px;font-family:monospace;outline:none;width:100%;transition:.15s"/>
+      <div style="display:flex;gap:8px">
+        <button onclick="saveApiKey()" style="flex:1;padding:9px;border-radius:10px;background:linear-gradient(135deg,#7c3aed,#2563eb);color:#fff;font-weight:700;font-size:13px;border:none;cursor:pointer">Saqlash</button>
+        <button onclick="clearApiKey()" style="padding:9px 14px;border-radius:10px;border:1.5px solid var(--border);background:transparent;color:var(--muted);font-weight:600;font-size:12px;cursor:pointer">O'chirish</button>
+      </div>
+      <div id="api-key-status" style="font-size:11px;text-align:center;color:var(--muted)"></div>
+    </div>
+    <!-- Messages -->
+    <div class="ai-msgs" id="ai-msgs"></div>
+    <!-- Suggestions -->
+    <div class="ai-suggest" id="ai-suggest">
+      <div class="sug-chip" onclick="sendSug(this)">🎮 O'yin uchun</div>
+      <div class="sug-chip" onclick="sendSug(this)">💼 Ish/ofis uchun</div>
+      <div class="sug-chip" onclick="sendSug(this)">🎨 Dizayn/video uchun</div>
+      <div class="sug-chip" onclick="sendSug(this)">📚 O'qish uchun</div>
+      <div class="sug-chip" onclick="sendSug(this)">💻 Dasturlash uchun</div>
+      <div class="sug-chip" onclick="sendSug(this)">💰 Eng arzon variant</div>
+    </div>
+    <!-- Input -->
+    <div class="ai-input-row">
+      <textarea class="ai-input" id="ai-input" rows="1" placeholder="Xabar yozing..."></textarea>
+      <button class="ai-send" id="ai-send-btn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><path d="M22 2L11 13M22 2L15 22l-4-9-9-4 20-7z"/></svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ ADMIN PANEL ═══════════════ -->
+<div id="admin-panel">
+  <div class="admin-box">
+    <!-- Login screen -->
+    <div id="admin-login-screen">
+      <div class="admin-head">
+        <div class="admin-head-title">🔐 Admin Panel</div>
+        <button class="admin-close" onclick="closeAdmin()">✕</button>
+      </div>
+      <div class="admin-login">
+        <h3>Admin kirish</h3>
+        <p style="font-size:12px;color:var(--muted);margin-bottom:8px">PIN kodni kiriting</p>
+        <input type="password" class="admin-pin-input" id="admin-pin" maxlength="6" placeholder="••••" onkeydown="if(event.key==='Enter')checkPin()"/>
+        <button class="admin-login-btn" onclick="checkPin()">Kirish</button>
+        <div id="admin-pin-err" style="font-size:12px;color:#ef4444;min-height:16px"></div>
+      </div>
+    </div>
+    <!-- Main panel -->
+    <div id="admin-main-screen" style="display:none;flex-direction:column;height:100%">
+      <div class="admin-head">
+        <div class="admin-head-title">
+          <span>🎛️</span> Reklama boshqaruvi
+          <span style="font-size:10px;opacity:.5;font-weight:400">onlylap admin</span>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <button onclick="changePinPrompt()" style="padding:4px 10px;border-radius:7px;background:rgba(255,255,255,.1);border:none;color:#fff;font-size:11px;cursor:pointer">PIN o'zgartirish</button>
+          <button class="admin-close" onclick="closeAdmin()">✕</button>
+        </div>
+      </div>
+      <div class="admin-body">
+        <!-- Active ads list -->
+        <div class="admin-section">
+          <div class="admin-section-title">Joriy reklamalar</div>
+          <div class="admin-ads-list" id="admin-ads-list">
+            <div style="text-align:center;color:var(--muted);font-size:13px;padding:20px">Hech qanday reklama yo'q</div>
+          </div>
+        </div>
+        <!-- Add form -->
+        <div class="admin-section">
+          <div class="admin-section-title" id="form-title">➕ Yangi reklama qo'shish</div>
+          <div class="admin-form">
+            <div class="admin-form-grid">
+              <label>Reklama nomi
+                <input id="ad-name" placeholder="Texnomart kampaniyasi"/>
+              </label>
+              <label>Joy (slot)
+                <select id="ad-slot">
+                  <option value="top">Yuqori banner</option>
+                  <option value="sidebar">Sidebar</option>
+                  <option value="results">Natijalar pastida</option>
+                </select>
+              </label>
+              <label class="full">Sarlavha (Title)
+                <input id="ad-title" placeholder="Texnomart — Yangi kolleksiya!"/>
+              </label>
+              <label class="full">Tavsif (Description)
+                <input id="ad-desc" placeholder="Eng yaxshi noutbuklar chegirmada"/>
+              </label>
+              <label>Emoji/Ikon
+                <input id="ad-icon" placeholder="🔥" maxlength="4"/>
+              </label>
+              <label>CTA tugma matni
+                <input id="ad-cta" placeholder="Ko'rish →"/>
+              </label>
+              <label>Havola (URL)
+                <input id="ad-url" placeholder="https://texnomart.uz" type="url"/>
+              </label>
+              <label>Fon rangi
+                <input id="ad-color" type="color" value="#f59e0b" style="height:36px;padding:3px"/>
+              </label>
+              <label>Ko'rsatish vaqti (soniya)
+                <input id="ad-duration" type="number" value="15" min="5" max="300" placeholder="15"/>
+              </label>
+              <label>Boshlanish vaqti
+                <input id="ad-start" type="datetime-local"/>
+              </label>
+              <label>Tugash vaqti
+                <input id="ad-end" type="datetime-local"/>
+              </label>
+              <label>Maxsus rang 2
+                <input id="ad-color2" type="color" value="#ef4444" style="height:36px;padding:3px"/>
+              </label>
+            </div>
+            <input type="hidden" id="ad-edit-id" value=""/>
+            <div style="display:flex;gap:8px;margin-top:12px">
+              <button class="admin-save-btn" onclick="saveAd()">💾 Saqlash</button>
+              <button onclick="resetAdForm()" style="padding:9px 16px;border-radius:10px;border:1.5px solid var(--border);background:transparent;color:var(--muted);font-weight:600;font-size:12px;cursor:pointer">Bekor qilish</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Admin floating button (hidden by default, shown with Ctrl+Shift+A) -->
+<button id="admin-fab" onclick="openAdmin()" title="Admin panel">⚙️</button>
+
+<script>
+/* ═══════════════════════════════════════════════════════════
+   LANGUAGE SYSTEM
+═══════════════════════════════════════════════════════════ */
+const LANG = {
+  uz: {
+    aiBtn:"AI Yordamchi", search:"QIDIRISH", clearFilters:"Filtrni tozalash",
+    models:"ta model mavjud", navGreet:"Salom",
+    stWelcomeTitle:"Laptop qidirish",
+    stWelcomeSub:'Chap paneldan kerakli xususiyatlarni tanlang va <strong>"QIDIRISH"</strong> tugmasini bosing.',
+    stEmptyTitle:"Natija topilmadi", stEmptySub:"Tanlangan xususiyatlarga mos laptop topilmadi. Filtrlarni kengaytirib qayta urinib ko'ring.",
+    stEmptyBtn:"Filtrni tozalash",
+    foundLabel:"ta laptop topildi", fromLabel:"ta ichidan",
+    sortLabel:"Saralash:", sortCheap:"💰 Arzon", sortPow:"🔥 Kuchli", sortLight:"🪶 Engil",
+    cheapest:"eng arzon", storeTitle:"Do'konlar & narxlar",
+    sbTitle:"Filtrlar",
+    aiGreet:`Assalomu alaykum! 👋 Men <b>onlylap</b> AI yordamchisiman.\n\nSizga eng mos noutbukni topishda yordam beraman.\n\n📌 <b>Qanday noutbuk kerak?</b> — qaysi soha yoki ish uchun ekanligi, byudjetingiz va qanday xususiyatlar muhimligini aytib bering!`,
+  },
+  ru: {
+    aiBtn:"ИИ Помощник", search:"ПОИСК", clearFilters:"Сбросить фильтры",
+    models:"моделей доступно", navGreet:"Привет",
+    stWelcomeTitle:"Поиск ноутбука",
+    stWelcomeSub:'Выберите нужные характеристики в левой панели и нажмите <strong>"ПОИСК"</strong>.',
+    stEmptyTitle:"Ничего не найдено", stEmptySub:"Ноутбуки с выбранными характеристиками не найдены. Попробуйте расширить фильтры.",
+    stEmptyBtn:"Сбросить фильтры",
+    foundLabel:"ноутбуков найдено", fromLabel:"из",
+    sortLabel:"Сортировка:", sortCheap:"💰 Дешевле", sortPow:"🔥 Мощнее", sortLight:"🪶 Легкий",
+    cheapest:"лучшая цена", storeTitle:"Магазины & цены",
+    sbTitle:"Фильтры",
+    aiGreet:`Привет! 👋 Я <b>ИИ Помощник onlylap</b>.\n\nПомогу найти идеальный ноутбук.\n\n📌 <b>Какой ноутбук вам нужен?</b> — расскажите для каких задач, ваш бюджет и что важно!`,
+  },
+  en: {
+    aiBtn:"AI Assistant", search:"SEARCH", clearFilters:"Clear filters",
+    models:"models available", navGreet:"Hello",
+    stWelcomeTitle:"Find a Laptop",
+    stWelcomeSub:'Select your desired specs from the left panel and click <strong>"SEARCH"</strong>.',
+    stEmptyTitle:"No results found", stEmptySub:"No laptops match your selected specs. Try broadening your filters.",
+    stEmptyBtn:"Clear filters",
+    foundLabel:"laptops found", fromLabel:"out of",
+    sortLabel:"Sort:", sortCheap:"💰 Cheapest", sortPow:"🔥 Powerful", sortLight:"🪶 Lightest",
+    cheapest:"best price", storeTitle:"Stores & prices",
+    sbTitle:"Filters",
+    aiGreet:`Hello! 👋 I'm the <b>onlylap AI Assistant</b>.\n\nI'll help you find your perfect laptop.\n\n📌 <b>What laptop do you need?</b> — tell me your use case, budget and priorities!`,
+  }
+};
+let currentLang = localStorage.getItem("ol_lang") || "uz";
+
+function applyLang(l) {
+  currentLang = l;
+  localStorage.setItem("ol_lang", l);
+  const t = LANG[l];
+  document.querySelectorAll("[data-i18n]").forEach(el => {
+    const key = el.dataset.i18n;
+    if (t[key] !== undefined) {
+      if (el.tagName === "INPUT" || el.tagName === "TEXTAREA") el.placeholder = t[key];
+      else el.innerHTML = t[key];
+    }
+  });
+  document.querySelectorAll(".lang-opt").forEach(b => b.classList.toggle("active", b.dataset.lang === l));
+  // update dynamic texts
+  const nc = document.getElementById("nav-count");
+  if (nc) nc.textContent = `${DB.length} ${t.models}`;
+  const st = document.getElementById("st-total");
+  if (st) st.textContent = DB.length;
+  // update sort chips text
+  const scs = document.querySelectorAll(".sort-chip");
+  if (scs.length >= 3) {
+    scs[0].textContent = t.sortCheap;
+    scs[1].textContent = t.sortPow;
+    scs[2].textContent = t.sortLight;
+  }
+  // update sidebar title
+  const sbt = document.querySelector(".sb-title");
+  if (sbt) { sbt.innerHTML = sbt.innerHTML.replace(/Filtrlar|Фильтры|Filters/, t.sbTitle); }
+}
+
+document.querySelectorAll(".lang-opt").forEach(btn => {
+  btn.addEventListener("click", () => applyLang(btn.dataset.lang));
+});
+
+/* ═══════════════════════════════════════════════════════════
+   AD SYSTEM
+═══════════════════════════════════════════════════════════ */
+const AD_STORAGE_KEY = "ol_ads";
+const AD_SHOWN_KEY   = "ol_ads_shown";
+
+function getAds() {
+  try { return JSON.parse(localStorage.getItem(AD_STORAGE_KEY)) || []; } catch { return []; }
+}
+function saveAds(ads) { localStorage.setItem(AD_STORAGE_KEY, JSON.stringify(ads)); }
+function getShown() {
+  try { return JSON.parse(localStorage.getItem(AD_SHOWN_KEY)) || {}; } catch { return {}; }
+}
+function markShown(id) {
+  const s = getShown(); s[id] = Date.now();
+  localStorage.setItem(AD_SHOWN_KEY, JSON.stringify(s));
+}
+
+function renderAds() {
+  const ads = getAds().filter(a => a.active);
+  const now = Date.now();
+  const shown = getShown();
+  ["top","sidebar","results"].forEach(slot => {
+    const el = document.getElementById("ad-" + slot);
+    if (!el) return;
+    el.innerHTML = "";
+    const slotAds = ads.filter(a => {
+      if (a.slot !== slot) return false;
+      if (a.start && now < new Date(a.start).getTime()) return false;
+      if (a.end && now > new Date(a.end).getTime()) return false;
+      // Check if already shown and dismissed for this session
+      if (shown[a.id] && (now - shown[a.id]) < (a.duration || 15) * 1000 * 100) return false;
+      return true;
+    });
+    if (!slotAds.length) return;
+    const ad = slotAds[0];
+    const banner = document.createElement("div");
+    banner.className = "ad-banner";
+    banner.style.marginBottom = "12px";
+    banner.innerHTML = `
+      <div class="ad-banner-text" style="background:linear-gradient(135deg,${ad.color||"#f59e0b"},${ad.color2||"#ef4444"})">
+        <div class="ad-ico">${ad.icon || "📢"}</div>
+        <div class="ad-content">
+          <div class="ad-title">${ad.title}</div>
+          <div class="ad-desc">${ad.desc || ""}</div>
+        </div>
+        ${ad.url ? `<a class="ad-cta" href="${ad.url}" target="_blank" rel="noopener" onclick="event.stopPropagation()">${ad.cta || "Ko'rish →"}</a>` : ""}
+      </div>
+      <span class="ad-label">Reklama</span>
+      <button class="ad-close-btn" title="Yopish">✕</button>
+      <div class="ad-timer-bar"><div class="ad-timer-fill" id="atf-${ad.id}" style="width:100%"></div></div>`;
+    if (ad.url) banner.addEventListener("click", () => window.open(ad.url, "_blank", "noopener"));
+    banner.querySelector(".ad-close-btn").addEventListener("click", e => {
+      e.stopPropagation(); markShown(ad.id); banner.remove();
+    });
+    el.appendChild(banner);
+    // Timer animation
+    const dur = (ad.duration || 15) * 1000;
+    const fill = document.getElementById("atf-" + ad.id);
+    if (fill) {
+      const start = Date.now();
+      const tick = () => {
+        const elapsed = Date.now() - start;
+        const pct = Math.max(0, 100 - (elapsed / dur * 100));
+        fill.style.width = pct + "%";
+        if (pct > 0) requestAnimationFrame(tick);
+        else { markShown(ad.id); banner.remove(); }
+      };
+      requestAnimationFrame(tick);
+    }
+  });
+}
+
+/* ═══════════════════════════════════════════════════════════
+   ADMIN PANEL
+═══════════════════════════════════════════════════════════ */
+const ADMIN_PIN_KEY = "ol_admin_pin";
+let adminAuthenticated = false;
+let editingAdId = null;
+
+function getAdminPin() { return localStorage.getItem(ADMIN_PIN_KEY) || "1234"; }
+
+function openAdmin() {
+  document.getElementById("admin-panel").classList.add("open");
+  if (!adminAuthenticated) {
+    document.getElementById("admin-login-screen").style.display = "";
+    document.getElementById("admin-main-screen").style.display = "none";
+    setTimeout(() => document.getElementById("admin-pin").focus(), 100);
+  } else {
+    showAdminMain();
+  }
+}
+function closeAdmin() {
+  document.getElementById("admin-panel").classList.remove("open");
+  document.getElementById("admin-pin").value = "";
+  document.getElementById("admin-pin-err").textContent = "";
+}
+function checkPin() {
+  const pin = document.getElementById("admin-pin").value;
+  if (pin === getAdminPin()) {
+    adminAuthenticated = true;
+    showAdminMain();
+  } else {
+    document.getElementById("admin-pin-err").textContent = "❌ Noto'g'ri PIN";
+    document.getElementById("admin-pin").value = "";
+  }
+}
+document.getElementById("admin-pin").addEventListener("keydown", e => { if(e.key==="Enter") checkPin(); });
+
+function showAdminMain() {
+  document.getElementById("admin-login-screen").style.display = "none";
+  document.getElementById("admin-main-screen").style.display = "flex";
+  renderAdminList();
+  setDefaultDates();
+}
+
+function setDefaultDates() {
+  const now = new Date();
+  const later = new Date(now.getTime() + 7*24*60*60*1000);
+  const fmt = d => d.toISOString().slice(0,16);
+  document.getElementById("ad-start").value = fmt(now);
+  document.getElementById("ad-end").value = fmt(later);
+}
+
+function renderAdminList() {
+  const ads = getAds();
+  const el = document.getElementById("admin-ads-list");
+  if (!ads.length) { el.innerHTML = '<div style="text-align:center;color:var(--muted);font-size:13px;padding:20px">Hech qanday reklama yo\'q. Quyida yangi reklama qo\'shing.</div>'; return; }
+  const slotNames = {top:"Yuqori banner", sidebar:"Sidebar", results:"Natijalar pastida"};
+  el.innerHTML = ads.map(a => `
+    <div class="admin-ad-item">
+      <div class="admin-ad-info">
+        <div class="admin-ad-slot-badge">${slotNames[a.slot]||a.slot}</div>
+        <div class="admin-ad-name">${a.name}</div>
+        <div class="admin-ad-meta">
+          ⏱ ${a.duration||15}s &nbsp;•&nbsp;
+          ${a.start ? '📅 ' + new Date(a.start).toLocaleDateString() : ''} ${a.end ? '— ' + new Date(a.end).toLocaleDateString() : ''}
+          &nbsp;•&nbsp; ${a.active ? '<span style="color:#22c55e">✓ Faol</span>' : '<span style="color:#ef4444">✗ Nofaol</span>'}
+        </div>
+      </div>
+      <div class="admin-ad-actions">
+        <button class="admin-btn-toggle ${a.active?'on':''}" onclick="toggleAd('${a.id}')">${a.active?'⏸ To\'xtat':'▶ Yoq'}</button>
+        <button class="admin-btn-edit" onclick="editAd('${a.id}')">✏️ Tahrir</button>
+        <button class="admin-btn-del" onclick="deleteAd('${a.id}')">🗑 O'chirish</button>
+      </div>
+    </div>`).join("");
+}
+
+function saveAd() {
+  const ads = getAds();
+  const id = editingAdId || ("ad_" + Date.now());
+  const ad = {
+    id, active: true,
+    name:     document.getElementById("ad-name").value.trim() || "Yangi reklama",
+    slot:     document.getElementById("ad-slot").value,
+    title:    document.getElementById("ad-title").value.trim(),
+    desc:     document.getElementById("ad-desc").value.trim(),
+    icon:     document.getElementById("ad-icon").value.trim() || "📢",
+    cta:      document.getElementById("ad-cta").value.trim() || "Ko'rish →",
+    url:      document.getElementById("ad-url").value.trim(),
+    color:    document.getElementById("ad-color").value,
+    color2:   document.getElementById("ad-color2").value,
+    duration: parseInt(document.getElementById("ad-duration").value) || 15,
+    start:    document.getElementById("ad-start").value,
+    end:      document.getElementById("ad-end").value,
+  };
+  if (!ad.title) { alert("Sarlavha (title) kiritilmadi!"); return; }
+  if (editingAdId) {
+    const idx = ads.findIndex(a => a.id === editingAdId);
+    if (idx > -1) { ads[idx] = {...ads[idx], ...ad}; }
+  } else {
+    ads.push(ad);
+  }
+  saveAds(ads);
+  resetAdForm();
+  renderAdminList();
+  renderAds();
+}
+
+function editAd(id) {
+  const ad = getAds().find(a => a.id === id);
+  if (!ad) return;
+  editingAdId = id;
+  document.getElementById("ad-name").value     = ad.name || "";
+  document.getElementById("ad-slot").value     = ad.slot || "top";
+  document.getElementById("ad-title").value    = ad.title || "";
+  document.getElementById("ad-desc").value     = ad.desc || "";
+  document.getElementById("ad-icon").value     = ad.icon || "";
+  document.getElementById("ad-cta").value      = ad.cta || "";
+  document.getElementById("ad-url").value      = ad.url || "";
+  document.getElementById("ad-color").value    = ad.color || "#f59e0b";
+  document.getElementById("ad-color2").value   = ad.color2 || "#ef4444";
+  document.getElementById("ad-duration").value = ad.duration || 15;
+  document.getElementById("ad-start").value    = ad.start || "";
+  document.getElementById("ad-end").value      = ad.end || "";
+  document.getElementById("form-title").textContent = "✏️ Reklamani tahrirlash";
+  document.querySelector(".admin-save-btn").textContent = "💾 Yangilash";
+  document.querySelector(".admin-form").scrollIntoView({behavior:"smooth"});
+}
+
+function resetAdForm() {
+  editingAdId = null;
+  ["ad-name","ad-title","ad-desc","ad-cta","ad-url"].forEach(id => document.getElementById(id).value = "");
+  document.getElementById("ad-icon").value     = "";
+  document.getElementById("ad-slot").value     = "top";
+  document.getElementById("ad-color").value    = "#f59e0b";
+  document.getElementById("ad-color2").value   = "#ef4444";
+  document.getElementById("ad-duration").value = 15;
+  document.getElementById("form-title").textContent = "➕ Yangi reklama qo'shish";
+  document.querySelector(".admin-save-btn").textContent = "💾 Saqlash";
+  setDefaultDates();
+}
+
+function deleteAd(id) {
+  if (!confirm("Reklamani o'chirishni tasdiqlaysizmi?")) return;
+  saveAds(getAds().filter(a => a.id !== id));
+  renderAdminList(); renderAds();
+}
+
+function toggleAd(id) {
+  const ads = getAds();
+  const ad = ads.find(a => a.id === id);
+  if (ad) { ad.active = !ad.active; saveAds(ads); renderAdminList(); renderAds(); }
+}
+
+function changePinPrompt() {
+  const p1 = prompt("Yangi PIN kiriting (4-6 raqam):");
+  if (!p1 || p1.length < 4) { alert("PIN kamida 4 ta raqam bo'lishi kerak"); return; }
+  const p2 = prompt("PIN ni takrorlang:");
+  if (p1 !== p2) { alert("PIN lar mos kelmadi!"); return; }
+  localStorage.setItem(ADMIN_PIN_KEY, p1);
+  alert("✅ PIN muvaffaqiyatli o'zgartirildi!");
+}
+
+// Keyboard shortcut to show admin fab: Ctrl+Shift+A
+document.addEventListener("keydown", e => {
+  if (e.ctrlKey && e.shiftKey && e.key === "A") {
+    const fab = document.getElementById("admin-fab");
+    fab.style.display = fab.style.display === "flex" ? "none" : "flex";
+  }
+});
+// Click outside to close
+document.getElementById("admin-panel").addEventListener("click", e => {
+  if (e.target === document.getElementById("admin-panel")) closeAdmin();
+});
+
+/* ═══════════════════════════════════════════════════════════
+   AI YORDAMCHI — with API key management
+═══════════════════════════════════════════════════════════ */
+const aiModal   = document.getElementById("ai-modal");
+const aiMsgs    = document.getElementById("ai-msgs");
+const aiInput   = document.getElementById("ai-input");
+const aiSendBtn = document.getElementById("ai-send-btn");
+const aiSuggest = document.getElementById("ai-suggest");
+const aiKeyPanel= document.getElementById("ai-key-panel");
+
+let aiHistory = [];
+let aiGreeted = false;
+
+function getApiKey() { return localStorage.getItem("ol_api_key") || ""; }
+function saveApiKey() {
+  const k = document.getElementById("api-key-input").value.trim();
+  if (!k.startsWith("sk-ant-")) { document.getElementById("api-key-status").textContent = "❌ Noto'g'ri format (sk-ant-... bilan boshlanishi kerak)"; return; }
+  localStorage.setItem("ol_api_key", k);
+  document.getElementById("api-key-status").textContent = "✅ Kalit saqlandi!";
+  document.getElementById("api-key-input").value = "";
+  setTimeout(() => { aiKeyPanel.style.display = "none"; if (!aiGreeted) { aiGreeted=true; greet(); } }, 800);
+}
+function clearApiKey() {
+  localStorage.removeItem("ol_api_key");
+  document.getElementById("api-key-input").value = "";
+  document.getElementById("api-key-status").textContent = "🗑 Kalit o'chirildi";
+}
+
+// Settings toggle
+document.getElementById("ai-settings-btn").addEventListener("click", () => {
+  const shown = aiKeyPanel.style.display === "flex";
+  aiKeyPanel.style.display = shown ? "none" : "flex";
+  if (!shown) aiKeyPanel.style.flexDirection = "column";
+  const k = getApiKey();
+  document.getElementById("api-key-status").textContent = k ? `✅ Kalit saqlangan (${k.slice(0,12)}...)` : "❌ Kalit kiritilmagan";
+});
+document.getElementById("api-key-input").addEventListener("keydown", e => { if(e.key==="Enter") saveApiKey(); });
+
+/* open/close */
+document.getElementById("ai-open-btn").addEventListener("click", () => {
+  aiModal.classList.add("open");
+  if (!aiGreeted) {
+    if (!getApiKey()) {
+      aiKeyPanel.style.display = "flex";
+      aiKeyPanel.style.flexDirection = "column";
+      addMsg("bot", "👋 Salom! AI yordamchi ishlashi uchun Anthropic API kalitini kiriting. Kalit ⚙️ tugmasini bosib ham kiritishingiz mumkin.");
+    } else {
+      aiGreeted = true;
+      greet();
+    }
+  }
+  setTimeout(() => aiInput.focus(), 200);
+});
+document.getElementById("ai-close-btn").addEventListener("click", () => aiModal.classList.remove("open"));
+aiModal.addEventListener("click", e => { if (e.target === aiModal) aiModal.classList.remove("open"); });
+
+function greet() {
+  const t = LANG[currentLang];
+  addMsg("bot", t.aiGreet || LANG.uz.aiGreet);
+}
+
+function addMsg(role, text, cards=[]) {
+  const wrap = document.createElement("div");
+  wrap.className = `msg ${role}`;
+  const bubble = document.createElement("div");
+  bubble.className = "bubble";
+  bubble.innerHTML = text.replace(/\n/g,"<br>");
+  wrap.appendChild(bubble);
+  cards.forEach(l => {
+    const minP = Math.min(...l.stores.map(s=>s.p));
+    const storeLine = l.stores.sort((a,b)=>a.p-b.p).slice(0,2).map(s=>`${s.n}: <b>${fmtUZS(s.p)}</b>`).join("  •  ");
+    const div = document.createElement("div");
+    div.className = "rec-card";
+    div.innerHTML = `<div class="rec-top"></div><div class="rec-body">
+      <div class="rec-brand">${l.brand}</div>
+      <div class="rec-name">${l.name}</div>
+      <div class="rec-specs">
+        <div class="rec-spec">CPU: <b>${l.cpu.split(" ").slice(-2).join(" ")}</b></div>
+        <div class="rec-spec">GPU: <b>${l.gpu.replace("NVIDIA ","").replace("Apple ","")}</b></div>
+        <div class="rec-spec">RAM: <b>${l.ram}GB</b></div>
+        <div class="rec-spec">SSD: <b>${l.ssd>=1024?l.ssd/1024+"TB":l.ssd+"GB"}</b></div>
+        <div class="rec-spec">Ekran: <b>${l.display.size}" ${l.display.type}</b></div>
+        <div class="rec-spec">OS: <b>${l.os.replace("Windows 11 ","Win ")}</b></div>
+      </div>
+      <div class="rec-price">${fmtUZS(minP)}</div>
+      <div class="rec-stores">${storeLine}</div>
+    </div>`;
+    wrap.appendChild(div);
+  });
+  const time = document.createElement("div");
+  time.className = "msg-time";
+  time.textContent = new Date().toLocaleTimeString("uz-UZ",{hour:"2-digit",minute:"2-digit"});
+  wrap.appendChild(time);
+  aiMsgs.appendChild(wrap);
+  aiMsgs.scrollTop = aiMsgs.scrollHeight;
+}
+
+function showTyping() {
+  const d = document.createElement("div");
+  d.id="ai-typing"; d.className="msg bot";
+  d.innerHTML=`<div class="typing"><span></span><span></span><span></span></div>`;
+  aiMsgs.appendChild(d);
+  aiMsgs.scrollTop = aiMsgs.scrollHeight;
+}
+function hideTyping() { const d=document.getElementById("ai-typing"); if(d) d.remove(); }
+
+async function sendMsg(text) {
+  if (!text.trim()) return;
+  const key = getApiKey();
+  if (!key) {
+    aiKeyPanel.style.display = "flex";
+    aiKeyPanel.style.flexDirection = "column";
+    addMsg("bot", "⚠️ Avval API kalitini kiriting. ⚙️ tugmasini bosing.");
+    return;
+  }
+  addMsg("user", text);
+  aiHistory.push({role:"user", content:text});
+  aiSuggest.style.display = "none";
+  aiInput.value = ""; aiInput.style.height = "auto";
+  aiSendBtn.disabled = true;
+  showTyping();
+
+  const dbSummary = DB.map(l => {
+    const minP = Math.min(...l.stores.map(s=>s.p));
+    return `ID:${l.id}|${l.brand} ${l.name}|CPU:${l.cpu}|GPU:${l.gpu}|RAM:${l.ram}GB|SSD:${l.ssd>=1024?l.ssd/1024+"TB":l.ssd+"GB"}|Ekran:${l.display.size}" ${l.display.type} ${l.display.hz}Hz|OS:${l.os}|Narx:${fmtUZS(minP)}|Do'konlar:${l.stores.map(s=>s.n+":"+fmtUZS(s.p)).join(",")}|Vazn:${l.weight}kg`;
+  }).join("\n");
+
+  const sysPrompt = `Sen onlylap.uz saytining AI yordamchisisansan. Foydalanuvchilarga mos noutbuk topishda yordam berasan.
+
+KATALOG (${DB.length} model):
+${dbSummary}
+
+QO'LLANMA:
+- Til: foydalanuvchi tilida gaplash (O'zbek/Rus/Ingliz)
+- Maqsad va byudjetni aniqla. Arzonroqmi yoki kuchliroq/qimmatroqmi deb so'ra
+- Katalogdan 2-3 ta eng mos noutbukni tavsiya qil
+- Tavsiya qilganda ID ko'rsat: [REC:1,5,10] formatida (faqat raqamlar)
+- Qisqa, aniq, do'stona gaplash`;
+
+  try {
+    const resp = await fetch("https://api.anthropic.com/v1/messages", {
+      method:"POST",
+      headers:{"Content-Type":"application/json","x-api-key":key,"anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true"},
+      body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:1000,system:sysPrompt,messages:aiHistory})
+    });
+    const data = await resp.json();
+    hideTyping();
+    if (data.error) { addMsg("bot","❌ API xato: "+data.error.message); aiSendBtn.disabled=false; return; }
+    let reply = data?.content?.[0]?.text || "Javob olishda xato.";
+    aiHistory.push({role:"assistant",content:reply});
+    const recMatch = reply.match(/\[REC:([\d,\s]+)\]/);
+    let recCards = [];
+    if (recMatch) {
+      const ids = recMatch[1].split(",").map(x=>parseInt(x.trim())).filter(Boolean);
+      recCards = ids.map(id=>DB.find(l=>l.id===id)).filter(Boolean);
+      reply = reply.replace(/\[REC:[^\]]+\]/g,"").trim();
+    }
+    aiSendBtn.disabled = false;
+    addMsg("bot", reply, recCards);
+  } catch(err) {
+    hideTyping(); aiSendBtn.disabled=false;
+    addMsg("bot","⚠️ Server bilan ulanishda xato. Internet aloqasini tekshiring yoki keyinroq urinib ko'ring.\n\n(Muhim: fayl to'g'ridan-to'g'ri ochilganda CORS cheklovi bo'lishi mumkin. Saytni domenga joylashtirganingizdan so'ng to'liq ishlaydi.)");
+  }
+}
+
+function sendSug(el) { sendMsg(el.textContent.trim()); }
+aiSendBtn.addEventListener("click", () => sendMsg(aiInput.value));
+aiInput.addEventListener("keydown", e => { if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();sendMsg(aiInput.value);} });
+aiInput.addEventListener("input", function(){this.style.height="auto";this.style.height=Math.min(this.scrollHeight,88)+"px";});
+
+/* ═══════════════════════════════════════════════════════════
+   INIT ALL
+═══════════════════════════════════════════════════════════ */
+(function initAll(){
+  // Language
+  applyLang(currentLang);
+  // Ads
+  renderAds();
+  // Refresh ads every 30s
+  setInterval(renderAds, 30000);
+})();
+</script>
+</body>
+</html>
